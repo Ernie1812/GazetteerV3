@@ -166,6 +166,49 @@ $('#selCountry').on('change', function() {
                 $('#txtWikiImg').html('<img src=' + result.data.wikiCountryExcerpt.thumbnail.source +'><br>');
                 $('#txtWiki').html('Wikipedia: ' + result.data.wikiCountryExcerpt.extract_html +'<br>');
 
+
+                //news
+                if ( result.data.BingNews[0].image) {
+                    $('#imgArticleZero').attr("src", result.data.BingNews[0].image.contentUrl);
+                } else {
+                    $('#imgArticleZero').hide();
+                }
+                if ( result.data.BingNews[1].image) {
+                    $('#imgArticleOne').attr("src", result.data.BingNews[1].image.contentUrl);
+                } else {
+                    $('#imgArticleOne').hide();
+                }
+                if ( result.data.BingNews[2].image) {
+                    $('#imgArticleTwo').attr("src", result.data.BingNews[2].image.contentUrl);
+                } else {
+                    $('#imgArticleTwo').hide();
+                }
+                if ( result.data.BingNews[3].image) {
+                    $('#imgArticleThree').attr("src", result.data.BingNews[3].image.contentUrl);
+                } else {
+                    $('#imgArticleThree').hide();
+                }
+                if ( result.data.BingNews[4].image) {
+                    $('#imgArticleFour').attr("src", result.data.BingNews[4].image.contentUrl);
+                } else {
+                    $('#imgArticleFour').hide();
+                }
+
+                $('#txtArticleNameZero').text(result.data.BingNews[0].name);
+                $('#articleLinkZero').attr("href", result.data.BingNews[0].url);
+
+                $('#txtArticleNameOne').text(result.data.BingNews[1].name);
+                $('#articleLinkOne').attr("href", result.data.BingNews[1].url);
+
+                $('#txtArticleNameTwo').text(result.data.BingNews[2].name);
+                $('#articleLinkTwo').attr("href", result.data.BingNews[2].url);    
+
+                $('#txtArticleNameThree').text(result.data.BingNews[3].name);
+                $('#articleLinkThree').attr("href", result.data.BingNews[3].url);
+
+                $('#txtArticleNameFour').text(result.data.BingNews[4].name);
+
+                $('#articleLinkFour').attr("href", result.data.BingNews[4].url);
             }
             
 
