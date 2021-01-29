@@ -119,6 +119,7 @@ $('#selCountry').on('change', function() {
                 //set variables to reuse
                 countryName = result.data.border.properties.name;
                 capitalCityName = result.data.restCountries.capital;
+
                 //weather info
                 let weatherIcon = result.data.weather.current.weather[0].icon;
                 
@@ -151,8 +152,19 @@ $('#selCountry').on('change', function() {
                 $('#txtCovidCases').html(numberWithCommas(covidConfirmed));
                 $('#txtCovidRecovered').html(numberWithCommas(covidcritical));
 
+                //currency info and exchange rate
+                let currencyCode = result.data.restCountries.currencies[0].code;
+                let currencyName = result.data.restCountries.currencies[0].name;
+                let currencySymbol = result.data.restCountries.currencies[0].symbol;
+                let exchangeRate = result.data.currentRate;
+                $('#txtCurrencySymbol').html(currencySymbol);
+                $('#txtCurrency').html(currencyName);
+                $('#txtCurrencyCode').html(currencyCode);
+                $('#txtRate').html( exchangeRate.toFixed(2) + ' ' + currencyCode + ' to 1 EURO.');
 
-                
+                //wiki country summary
+                $('#txtWikiImg').html('<img src=' + result.data.wikiCountryExcerpt.thumbnail.source +'><br>');
+                $('#txtWiki').html('Wikipedia: ' + result.data.wikiCountryExcerpt.extract_html +'<br>');
 
             }
             
