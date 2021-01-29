@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gazetteer</title>
+  <link rel="stylesheet" type="text/css" href="assets/css/leafletMainStyle.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin="" />
+  <link rel="stylesheet" href="assets/vendors/Leaflet.markercluster-1.4.1/dist/MarkerCluster.css">
+  <link rel="stylesheet" href="assets/vendors/Leaflet.markercluster-1.4.1/dist/MarkerCluster.Default.css">
+</head>
+
+<body>
+  
+  <nav class="navbar navbar-light d-flex justify-content-start">
+    <h3>Choose a country: </h3>
+    <select name="sel-country" id="selCountry"></select>
+  </nav>
+  <div id="loading">
+      <p><img src="http://i.stack.imgur.com/FhHRx.gif"/> Please Wait</p>
+    </div>
+  <div id="map" style="height: 75vh; width: 90vw; "></div>
+  
+  <!--Wikipedia Modal -->
+  <div class="modal fade" id="wikiModal" tabindex="-1" aria-labelledby="wikiModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="wikiModalLabel">Wikipedia Info</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="txtWikiImg"></div>
+          <div id="txtWiki"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Covid Modal -->
+  <div class="modal fade" id="covidModal" tabindex="-1" aria-labelledby="covidModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="covidModalLabel">Covid Info</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <table class="table">
+            <tbody>
+              <tr>
+                <th scope="row">Deaths:</th>
+                <td id="txtCovidDeaths"></td>
+              </tr>
+              <tr>
+                <th scope="row">Cases:</th>
+                <td id="txtCovidCases"></td>
+              </tr>
+              <tr>
+                <th scope="row">Recovered:</th>
+                <td id="txtCovidRecovered"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Weather Modal -->
+  <div class="modal fade" id="weatherModal" tabindex="-1" aria-labelledby="weatherModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="weatherModalLabel"></h5>
+          
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h1 id="txtCapitalWeatherName"></h1>
+          <table class="table">
+            <tbody>
+              <tr>
+                <td id="CapitalWeatherIcon"></td>
+                <th scope="row">Current Temp:</th>
+                <td id="txtCapitalWeatherCurrent"></td>
+              </tr>
+              <tr>
+                <td id="CapitalWindIcon"></td>
+                <th class="text-sm-left" scope="row">Windspeed:</th>
+                <td id="txtCapitalWeatherWindspeed"></td>
+              </tr>
+              <tr>
+                <td id="CapitalHumidityIcon"></td>
+                <th scope="row">Humidity:</th>
+                <td id="txtCapitalWeatherHumidity">2</td>
+              </tr>
+              <tr>
+                <td class="CapitalHiTempIcon"></td>
+                <th scope="row">High:</th>
+                <td id="txtCapitalWeatherHi"></td>
+              </tr>
+              <tr>
+                <td class="CapitalLoTempIcon"></td>
+                <th scope="row">Low:</th>
+                <td id="txtCapitalWeatherLo"></td>
+              </tr>
+              <tr>
+                <td class="CapitalHiTempIcon"></td>
+                <th scope="row">Tomorrow's High:</th>
+                <td id="txtCapitalTomorrowsWeatherHi"></td>
+              </tr>
+              <tr>
+                <td class="CapitalLoTempIcon"></td>
+                <th scope="row">Tomorrow's Low:</th>
+                <td id="txtCapitalTomorrowsWeatherLo"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div> -->
+    </div>
+  </div>
+
+  <!-- exchange rates modal -->
+  <div class="modal fade" id="currencyModal" tabindex="-1" aria-labelledby="currencyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="currencyModalLabel">Currency Info</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <table class="table">
+            <tbody>
+              <tr class="success">
+                <td>Name:</td>
+                <td id="txtCurrency"></td>
+
+              </tr>
+              <tr class="info">
+                <td>Code:</td>
+                <td id="txtCurrencyCode"></td>
+              </tr>
+              <tr class="success">
+                <td>Symbol:</td>
+                <td id="txtCurrencySymbol"></td>
+              </tr>
+              <tr class="info">
+                <td>Exhange Rate:</td>
+                <td id="txtRate">$</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- News modal -->
+  <div class="modal fade" id="newsModal" tabindex="-1" aria-labelledby="newsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="newsModalLabel">News</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img id="imgArticleZero" src="" class="w-100" alt="News Article Image">
+                <div>
+                  <h5 id="txtArticleNameZero"></h5>
+                  <a id="articleLinkZero" href="">Read article</a>
+                </div>
+              </div>
+
+              <div class="carousel-item">
+                <img id="imgArticleOne" src="" class="w-100" alt="News Article Image">
+                <div>
+                  <h5 id="txtArticleNameOne"></h5>
+                  <a id="articleLinkOne" href="">Read article  </a>
+                </div>
+              </div>
+
+              <div class="carousel-item">
+                <img id="imgArticleTwo" src="" class="w-100" alt="News Article Image">
+                <div>
+                  <h5 id="txtArticleNameTwo"></h5>
+                  <a id="articleLinkTwo" href="">Read article</a>
+                </div>
+              </div>
+
+              <div class="carousel-item">
+                <img id="imgArticleThree" src="" class="w-100" alt="News Article Image">
+                <div>
+                  <h5 id="txtArticleNameThree"></h5>
+                  <a id="articleLinkThree" href="">Read article</a>
+                </div>
+              </div>
+
+              <div class="carousel-item">
+                <img id="imgArticleFour" src="" class="w-100" alt="News Article Image">
+                <div>
+                  <h5 id="txtArticleNameFour"></h5>
+                  <a id="articleLinkFour" href="">Read article</a>
+                </div>
+              </div>
+
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </a>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="overlay"></div>
+  
+  <script src="assets/vendors/jquery-3.5.1.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+  <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+  <script src="assets/vendors/Leaflet.markercluster-1.4.1/dist/leaflet.markercluster.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+    crossorigin="anonymous"></script>
+  <script src="assets/js/leafletApp.js"></script>
+</body>
+
+</html>
