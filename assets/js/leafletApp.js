@@ -2,6 +2,8 @@ let countryName;
 let border;
 let currentCountry;
 
+let capitalCityName;
+
 //load gif while waiting
 $(document).ajaxStart(function(){
     $('#loading').show();
@@ -63,7 +65,7 @@ $(document).ready(function () {
 
             //User's Location info to change select option
             $.ajax({
-                url: "assets/php/openCage.php",
+                url: "assets/php/ipStackApi.php",
                 type: 'GET',
                 dataType: 'json', 
                     success: function (result) {
@@ -102,16 +104,39 @@ $('#selCountry').on('change', function() {
                     color: '#ff7800',
                     weight: 2,
                     opacity: 0.65
-                }).addTo(map);
+                });
 
             let bounds = border.getBounds();
             map.flyToBounds(bounds, {
                     padding: [0, 35], 
                     duration: 2
                 });
-        
-        
-        
+
+            border.addTo(map); 
+            
+            //weather
+            if (result.status.name == "ok") {
+                let weatherIcon = result.data.weather.current.weather[0].icon;
+                capitalCityName = result.data.restCountries.capital;
+                $('#txtCapitalWeatherName').html(capitalCityName);
+                $('#txtCapitalWeatherCurrent').html( Math.round(result.data.weather.current.temp) +'&#8451<br>');
+                $('#txtCapitalWeatherDescription').html( result.data.weather.current.weather[0].description);
+                $('#txtCapitalWeatherWindspeed').html(result.data.weather.current.wind_speed + ' km/h');
+                $('#txtCapitalWeatherHumidity').html( Math.round(result.data.weather.current.humidity) +'&#37');
+                $('#txtCapitalWeatherLo').html( Math.round(result.data.weather.daily[0].temp.min) +'&#8451<br>');
+                $('#txtCapitalWeatherHi').html( Math.round(result.data.weather.daily[0].temp.max) +'&#8451<br>');
+                $('#txtCapitalTomorrowsWeatherLo').html( Math.round(result.data.weather.daily[1].temp.min) +'&#8451<br>');
+                $('#txtCapitalTomorrowsWeatherHi').html( Math.round(result.data.weather.daily[1].temp.max) +'&#8451<br>');
+                $('#CapitalWeatherIcon').html( `<img src="https://openweathermap.org/img/wn/${weatherIcon}@2x.png" width="24px">`);
+                $('#CapitalHumidityIcon').html('<img src="assets/img/icons/humidity.svg" width="24px">');
+                $('#CapitalWindIcon').html('<img src="assets/img/icons/007-windy.svg" width="24px">');
+                $('.CapitalHiTempIcon').html('<img src="assets/img/icons/temperatureHi.svg" width="24px">');
+                $('.CapitalLoTempIcon').html('<img src="assets/img/icons/temperatureLo.svg" width="24px">');
+            }
+            
+
+
+
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.log('test',textStatus, errorThrown);
@@ -119,23 +144,6 @@ $('#selCountry').on('change', function() {
 
     });
 
-    
-    // //adds borders
-    // if (map.hasLayer(border)) {
-    //     map.removeLayer(border);
-    // }
-    
-    // border = L.geoJSON(countryArray[0], {
-    //         color: '#ff7800',
-    //         weight: 2,
-    //         opacity: 0.65
-    //     }).addTo(map);
-
-    // let bounds = border.getBounds();
-    // map.flyToBounds(bounds, {
-    //         padding: [0, 35], 
-    //         duration: 2
-    //     });
 
     
     // //JSON file Capital City Info with Coordinates and add marker
