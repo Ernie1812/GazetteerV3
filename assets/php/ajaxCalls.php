@@ -183,7 +183,7 @@
     
     $output['data']['userIpInfo'] = $UserIp;
     $output['data']['weather'] = $weather;
-    $output['data']['covid'] = $covid;
+    $output['data']['covidData'] = $covid;
     $output['data']['exchangeRates'] = $exchangeRates;
     $output['data']['wikiCountryExcerpt'] = $wikiCountryExcerpt;
     $output['data']['BingNews'] = $bingNews['value'];

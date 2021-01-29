@@ -114,10 +114,15 @@ $('#selCountry').on('change', function() {
 
             border.addTo(map); 
             
-            //weather
+            
             if (result.status.name == "ok") {
-                let weatherIcon = result.data.weather.current.weather[0].icon;
+                //set variables to reuse
+                countryName = result.data.border.properties.name;
                 capitalCityName = result.data.restCountries.capital;
+                //weather info
+                let weatherIcon = result.data.weather.current.weather[0].icon;
+                
+
                 $('#txtCapitalWeatherName').html(capitalCityName);
                 $('#txtCapitalWeatherCurrent').html( Math.round(result.data.weather.current.temp) +'&#8451<br>');
                 $('#txtCapitalWeatherDescription').html( result.data.weather.current.weather[0].description);
@@ -132,6 +137,23 @@ $('#selCountry').on('change', function() {
                 $('#CapitalWindIcon').html('<img src="assets/img/icons/007-windy.svg" width="24px">');
                 $('.CapitalHiTempIcon').html('<img src="assets/img/icons/temperatureHi.svg" width="24px">');
                 $('.CapitalLoTempIcon').html('<img src="assets/img/icons/temperatureLo.svg" width="24px">');
+
+                //Covid info
+                let covidDeaths = result.data.covidData.data.timeline[0].deaths;
+                let covidConfirmed = result.data.covidData.data.timeline[0].confirmed;
+                let covidcritical = result.data.covidData.data.timeline[0].recovered;
+                    
+                function numberWithCommas(x) {
+                    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
+                $('#covidModalLabel').html('Latest Covid data for: ' + countryName);
+                $('#txtCovidDeaths').html(numberWithCommas(covidDeaths));
+                $('#txtCovidCases').html(numberWithCommas(covidConfirmed));
+                $('#txtCovidRecovered').html(numberWithCommas(covidcritical));
+
+
+                
+
             }
             
 
@@ -181,41 +203,7 @@ $('#selCountry').on('change', function() {
     //     }
     // });
 
-    // //openWeather Current Weather API          
-    // $.ajax({
-    //     url: "assets/php/openWeatherCurrent.php",
-    //     type: 'GET',
-    //     dataType: 'json',
-    //     data: {
-    //         lat: capitalCityLat,
-    //         lng: capitalCityLon
-    //     }, 
-    //     success: function(result) {
-    //         console.log('CurrentCapitalWeather', result);
-            
-    //         let weatherIcon = result.weatherData.current.weather[0].icon;
-            
-    //         if (result.status.name == "ok") {
-    //             $('#txtCapitalWeatherName').html(capitalCityName);
-    //             $('#txtCapitalWeatherCurrent').html( Math.round(result.weatherData.current.temp) +'&#8451<br>');
-    //             $('#txtCapitalWeatherDescription').html( result.weatherData.current.weather[0].description);
-    //             $('#txtCapitalWeatherWindspeed').html(result.weatherData.current.wind_speed + ' km/h');
-    //             $('#txtCapitalWeatherHumidity').html( Math.round(result.weatherData.current.humidity) +'&#37');
-    //             $('#txtCapitalWeatherLo').html( Math.round(result.weatherData.daily[0].temp.min) +'&#8451<br>');
-    //             $('#txtCapitalWeatherHi').html( Math.round(result.weatherData.daily[0].temp.max) +'&#8451<br>');
-    //             $('#txtCapitalTomorrowsWeatherLo').html( Math.round(result.weatherData.daily[1].temp.min) +'&#8451<br>');
-    //             $('#txtCapitalTomorrowsWeatherHi').html( Math.round(result.weatherData.daily[1].temp.max) +'&#8451<br>');
-    //             $('#CapitalWeatherIcon').html( `<img src="https://openweathermap.org/img/wn/${weatherIcon}@2x.png" width="24px">`);
-    //             $('#CapitalHumidityIcon').html('<img src="assets/img/icons/humidity.svg" width="24px">');
-    //             $('#CapitalWindIcon').html('<img src="assets/img/icons/007-windy.svg" width="24px">');
-    //             $('.CapitalHiTempIcon').html('<img src="assets/img/icons/temperatureHi.svg" width="24px">');
-    //             $('.CapitalLoTempIcon').html('<img src="assets/img/icons/temperatureLo.svg" width="24px">');
-
-    //         }
-    //     },
-    //     error: function(jqXHR, textStatus, errorThrown) {
-    //         console.log('openWeather Current Data Error',textStatus, errorThrown);
-    //     }
+    // 
     // }); 
         
 //end on change code
