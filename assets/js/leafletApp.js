@@ -219,6 +219,33 @@ $('#selCountry').on('change', function() {
 
                 $('#articleLinkFour').attr("href", result.data.BingNews[4].url);
             }
+
+            //UNESCO Sites
+            var unescoLayerGroup = L.layerGroup();
+
+            if (unescoLayerGroup) {
+                unescoLayerGroup.clearLayers();
+            }
+
+            for (let i = 0; i < result.data.unescoSites.records.length; i++) {
+
+                var unescoIcon = L.icon({
+                    
+                    iconUrl: 'assets/img/icons/unesco.png',
+                    iconSize: [20, 30], // size of the icon
+                    popupAnchor: [0,-15]
+                    });
+                
+                let unescoSite = result.data.unescoSites.records[i].fields.site;
+                let unescoLat = result.data.unescoSites.records[i].fields.coordinates[0];
+                let unescoLng = result.data.unescoSites.records[i].fields.coordinates[1];
+                
+                var unescoMarker = L.marker(new L.LatLng(unescoLat, unescoLng), ({icon: unescoIcon})).bindPopup(unescoSite);
+                unescoLayerGroup.addLayer(unescoMarker);
+           };
+
+           var overlay = {'UNESCO World Heritage Sites': unescoLayerGroup};
+           L.control.layers(null, overlay).addTo(map);
             
 
 

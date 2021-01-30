@@ -3,6 +3,7 @@
     $countryCodeA2 = null;
     $countryCodeA3 = null;
     $capitalCity = null;
+    $countryFullName = null;
     
     $countryName = null;
     $capitalLat = null;
@@ -60,6 +61,7 @@
 
         $restCountries = json_decode($result,true); 
         $output['data']['restCountries'] = $restCountries;
+        $countryFullName = $restCountries['name'];
         $capitalCity = $restCountries['capital'];
         $currentCurrency = $restCountries['currencies'][0]['code'];
         
@@ -174,6 +176,20 @@
 
     $bingNews = json_decode($json, true);
 
+    //UNESCO Sites
+    $url='https://data.opendatasoft.com/api/records/1.0/search/?dataset=world-heritage-list%40public-us&q='.$countryFullName.'&rows=20&sort=date_inscribed&facet=category&facet=region&facet=states&refine.category=Cultural&refine.states='.$countryFullName;
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_URL,$url);
+
+    $result=curl_exec($ch);
+
+    curl_close($ch);
+
+    $unesco = json_decode($result,true);
+
     //output status
     $output['status']['code'] = "200";
     $output['status']['name'] = "ok";
@@ -187,6 +203,7 @@
     $output['data']['exchangeRates'] = $exchangeRates;
     $output['data']['wikiCountryExcerpt'] = $wikiCountryExcerpt;
     $output['data']['BingNews'] = $bingNews['value'];
+    $output['data']['unescoSites'] = $unesco;
 
     header('Content-Type: application/json; charset=UTF-8');
 
