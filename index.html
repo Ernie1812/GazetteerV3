@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gazetteer</title>
-  <link rel="stylesheet" type="text/css" href="assets/css/leafletMainStyle.css">
+  
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
@@ -14,6 +14,7 @@
     crossorigin="" />
   <link rel="stylesheet" href="assets/vendors/Leaflet.markercluster-1.4.1/dist/MarkerCluster.css">
   <link rel="stylesheet" href="assets/vendors/Leaflet.markercluster-1.4.1/dist/MarkerCluster.Default.css">
+  <link rel="stylesheet" href="assets/css/leafletMainStyle.css">
 </head>
 
 <body>
@@ -184,40 +185,68 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+          <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
             <ol class="carousel-indicators">
-              <li data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"></li>
-              <li data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"></li>
-              <li data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"></li>
+              <li data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"></li>
+              <li data-bs-target="#myCarousel" data-bs-slide-to="1"></li>
+              <li data-bs-target="#myCarousel" data-bs-slide-to="2"></li>
+              <li data-bs-target="#myCarousel" data-bs-slide-to="3"></li>
+              <li data-bs-target="#myCarousel" data-bs-slide-to="4"></li>
             </ol>
+
             <div class="carousel-inner">
-              <div class="carousel-item active">
-                <img id="imgArticleZero" src="..." class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                  <h5 id="txtArticleNameZero"></h5>
-                  <a  id="articleLinkZero" class="btn btn-info btn-sm">Read article</a>
+              <div id="imgArticleZeroContainer" class="carousel-item active" >
+                
+                <div class="container">
+                  <div class="carousel-caption text-start">
+                    <h5 id="txtArticleNameZero"></h5>
+                    <p><a id="articleLinkZero" class="btn btn-lg btn-primary" href="" role="button">Read Article</a></p>
+                  </div>
                 </div>
               </div>
-              <div class="carousel-item">
-                <img id="imgArticleOne" src="..." class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                  <h5 id="txtArticleNameOne"></h5>
-                  <a id="articleLinkOne" class="btn btn-info btn-sm" >Read article</a>
+
+              <div id="imgArticleOneContainer" class="carousel-item">
+                <div class="container">
+                  <div class="carousel-caption">
+                    <h5 id="txtArticleNameOne"></h5>
+                    <p><a id="articleLinkOne" id="articleLinkZero" class="btn btn-lg btn-primary" href="" role="button">Read Article</a></p>
+                  </div>
                 </div>
               </div>
-              <div class="carousel-item">
-                <img id="imgArticleTwo" src="..." class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                  <h5 id="txtArticleNameTwo"></h5>
-                  <a id="articleLinkTwo" class="btn btn-info btn-sm" >Read article</a>
+
+              <div id="imgArticleTwoContainer" class="carousel-item">
+                <div class="container">
+                  <div class="carousel-caption text-end">
+                    <h5 id="txtArticleNameTwo"></h5>
+                    <p><a id="articleLinkTwo" class="btn btn-lg btn-primary" href="" role="button">Read Article</a></p>
+                  </div>
                 </div>
               </div>
+
+              <div id="imgArticleThreeContainer" class="carousel-item">
+                <div class="container">
+                  <div class="carousel-caption">
+                    <h5 id="txtArticleNameThree"></h5>
+                    <p><a id="articleLinkThree" id="articleLinkZero" class="btn btn-lg btn-primary" href="" role="button">Read Article</a></p>
+                  </div>
+                </div>
+              </div>
+
+              <div id="imgArticleFourContainer" class="carousel-item">
+                <div class="container">
+                  <div class="carousel-caption text-end">
+                    <h5 id="txtArticleNameFour"></h5>
+                    <p><a id="articleLinkFour" class="btn btn-lg btn-primary" href="" role="button">Read Article</a></p>
+                  </div>
+                </div>
+              </div>
+
             </div>
-            <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-bs-slide="prev">
+            <a class="carousel-control-prev" href="#myCarousel" role="button" data-bs-slide="prev">
               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
               <span class="visually-hidden">Previous</span>
             </a>
-            <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-bs-slide="next">
+            <a class="carousel-control-next" href="#myCarousel" role="button" data-bs-slide="next">
               <span class="carousel-control-next-icon" aria-hidden="true"></span>
               <span class="visually-hidden">Next</span>
             </a>
