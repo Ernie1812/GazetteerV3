@@ -12,6 +12,8 @@ let unescoLng;
 let unescoMarker;
 let unescoNumber;
 
+let capCityCluster;
+
 //load gif while waiting
 $(document).ajaxStart(function(){
     $('#loading').show();
@@ -73,6 +75,29 @@ let unescoToggle = L.easyButton({
       title: 'remove UNESCO markers'
     }]
   }).addTo(map);
+
+  //Capital City Cluster Easy Button Toggle
+let capcityToggle = L.easyButton({
+    states: [{
+      stateName: 'add-markers',
+      icon: '<img src="assets/img/icons/hospital.png" width="20vw" height="20vh">',
+      title: 'Capital City Places',
+      onClick: function(control) {
+        map.addLayer(capCityCluster);
+        control.state('remove-markers');
+        
+      }
+    }, {
+      icon: 'fa-undo',
+      stateName: 'remove-markers',
+      onClick: function(control) {
+        map.removeLayer(capCityCluster);
+        control.state('add-markers');
+      },
+      title: 'remove capital city markers'
+    }]
+  }).addTo(map);
+
 
 $(document).ready(function () { 
 //populate select options
@@ -275,7 +300,7 @@ $('#selCountry').on('change', function() {
             };
 
             //capital city cluster
-            var capCityCluster = L.markerClusterGroup();
+            capCityCluster = L.markerClusterGroup();
 
             for (let i = 0; i < result.data.capCityHospitals.items.length; i++) {
                 hospitalName = result.data.capCityHospitals.items[i].title;
@@ -316,8 +341,8 @@ $('#selCountry').on('change', function() {
                 var capCityMarker = L.marker(new L.LatLng(restaurantLat, restaurantLng)).bindPopup(restaurantName);
                 capCityCluster.addLayer(capCityMarker);
             };
+
             
-            map.addLayer(capCityCluster);
 
 
         },
