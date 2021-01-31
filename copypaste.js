@@ -1,3 +1,26 @@
+var capCityCluster = L.markerClusterGroup();
+
+            for (let i = 0; i < result.data.capCityHospitals.items.length; i++) {
+                hospitalName = result.data.capCityHospitals.items[i].title;
+                hospitalLat = result.data.capCityHospitals.items[i].position.lat;
+                hospitalLng = result.data.capCityHospitals.items[i].position.lng;
+                var capCityMarker = L.marker(new L.LatLng(hospitalLat, hospitalLng)).bindPopup(hospitalName);
+                capCityCluster.addLayer(capCityMarker);
+            };
+
+            map.addLayer(landmarksCluster);
+
+
+
+
+
+
+
+
+
+
+
+
 //news
 if ( result.data.BingNews[0].image) {
     $('#imgArticleZero').attr("src", result.data.BingNews[0].image.contentUrl);

@@ -190,6 +190,76 @@
 
     $unesco = json_decode($result,true);
 
+    //capital city hospitals
+    $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=hospital&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=15&apiKey=JrMv7faeaOpGnJXd_VwW11pu8AoiIgEy_O29cZHOtMQ';
+
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_URL,$url);
+
+	$result=curl_exec($ch);
+
+	curl_close($ch);
+
+    $capCityHospitals = json_decode($result,true);
+    
+    //capital city airports
+    $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=airport&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=15&apiKey=JrMv7faeaOpGnJXd_VwW11pu8AoiIgEy_O29cZHOtMQ';
+
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_URL,$url);
+
+	$result=curl_exec($ch);
+
+	curl_close($ch);
+
+    $capCityAirports = json_decode($result,true);
+    
+    //capital city hotels
+    $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=hotel&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=20&apiKey=JrMv7faeaOpGnJXd_VwW11pu8AoiIgEy_O29cZHOtMQ';
+
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_URL,$url);
+
+	$result=curl_exec($ch);
+
+	curl_close($ch);
+
+    $capCityHotels = json_decode($result,true);
+    
+    //capital city parks
+    $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=park&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=20&apiKey=JrMv7faeaOpGnJXd_VwW11pu8AoiIgEy_O29cZHOtMQ';
+
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_URL,$url);
+
+	$result=curl_exec($ch);
+
+	curl_close($ch);
+
+    $capCityParks = json_decode($result,true);
+
+    //capital city parks
+    $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=restaurant&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=20&apiKey=JrMv7faeaOpGnJXd_VwW11pu8AoiIgEy_O29cZHOtMQ';
+
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_URL,$url);
+
+	$result=curl_exec($ch);
+
+	curl_close($ch);
+
+    $capCityRestaurants= json_decode($result,true);
+
     //output status
     $output['status']['code'] = "200";
     $output['status']['name'] = "ok";
@@ -204,6 +274,11 @@
     $output['data']['wikiCountryExcerpt'] = $wikiCountryExcerpt;
     $output['data']['BingNews'] = $bingNews['value'];
     $output['data']['unescoSites'] = $unesco;
+    $output['data']['capCityHospitals'] = $capCityHospitals;
+    $output['data']['capCityAirports'] = $capCityAirports;
+    $output['data']['capCityHotels'] = $capCityHotels;
+    $output['data']['capCityParks'] = $capCityParks;
+    $output['data']['capCityRestaurants'] = $capCityRestaurants;
 
     header('Content-Type: application/json; charset=UTF-8');
 

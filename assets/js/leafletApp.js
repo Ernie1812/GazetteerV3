@@ -57,7 +57,7 @@ let unescoToggle = L.easyButton({
       onClick: function(control) {
         if(unescoNumber === 0) {
             $('#unescoModal').modal('show');
-            $( "[title]='UNESCO World Heritage Sites'" ).removeClass( "remove-markers-active" ).addClass( "add-markers-active" );
+            $( '[title]="UNESCO World Heritage Sites"' ).removeClass( "remove-markers-active" ).addClass( "add-markers-active" );
         };
         map.addLayer(unescoLayerGroup);
         control.state('remove-markers');
@@ -118,7 +118,7 @@ $(document).ready(function () {
 $('#selCountry').on('change', function() {
     //console.clear();
     let borderCountryCode = $("#selCountry").val();
-
+    
     $.ajax({
         url: "assets/php/ajaxCalls.php",
         type: 'GET',
@@ -127,7 +127,8 @@ $('#selCountry').on('change', function() {
                 countryCode: borderCountryCode
             },
         success: function(result) {
-            console.log('test', result);
+            console.clear();
+            console.log('Call Results', result);
             
             //adds borders
             if (map.hasLayer(border)) {
@@ -173,13 +174,14 @@ $('#selCountry').on('change', function() {
                 $('.CapitalLoTempIcon').html('<img src="assets/img/icons/temperatureLo.svg" width="24px">');
 
                 //Covid info
-                let covidDeaths = result.data.covidData.data.timeline[0].deaths;
-                let covidConfirmed = result.data.covidData.data.timeline[0].confirmed;
-                let covidcritical = result.data.covidData.data.timeline[0].recovered;
+                let covidDeaths = result.data.covidData.data.latest_data.deaths;
+                let covidConfirmed = result.data.covidData.data.latest_data.confirmed;
+                let covidcritical = result.data.covidData.data.latest_data.recovered;
                     
                 function numberWithCommas(x) {
                     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 }
+
                 $('#covidModalLabel').html('Latest Covid data for: ' + countryName);
                 $('#txtCovidDeaths').html(numberWithCommas(covidDeaths));
                 $('#txtCovidCases').html(numberWithCommas(covidConfirmed));
@@ -271,6 +273,51 @@ $('#selCountry').on('change', function() {
                     unescoMarker = L.marker(new L.LatLng(unescoLat, unescoLng), ({icon: unescoIcon})).bindPopup(`<h3>${unescoSite}</h3><p>${result.data.unescoSites.records[i].fields.short_description}</p>`);
                     unescoLayerGroup.addLayer(unescoMarker);
             };
+
+            //capital city cluster
+            var capCityCluster = L.markerClusterGroup();
+
+            for (let i = 0; i < result.data.capCityHospitals.items.length; i++) {
+                hospitalName = result.data.capCityHospitals.items[i].title;
+                hospitalLat = result.data.capCityHospitals.items[i].position.lat;
+                hospitalLng = result.data.capCityHospitals.items[i].position.lng;
+                var capCityMarker = L.marker(new L.LatLng(hospitalLat, hospitalLng)).bindPopup(hospitalName);
+                capCityCluster.addLayer(capCityMarker);
+            };
+            
+            for (let i = 0; i < result.data.capCityAirports.items.length; i++) {
+                airportName = result.data.capCityAirports.items[i].title;
+                airportLat = result.data.capCityAirports.items[i].position.lat;
+                airportLng = result.data.capCityAirports.items[i].position.lng;
+                var capCityMarker = L.marker(new L.LatLng(airportLat, airportLng)).bindPopup(airportName);
+                capCityCluster.addLayer(capCityMarker);
+            };
+
+            for (let i = 0; i < result.data.capCityHotels.items.length; i++) {
+                hotelName = result.data.capCityHotels.items[i].title;
+                hotelLat = result.data.capCityHotels.items[i].position.lat;
+                hotelLng = result.data.capCityHotels.items[i].position.lng;
+                var capCityMarker = L.marker(new L.LatLng(hotelLat, hotelLng)).bindPopup(hotelName);
+                capCityCluster.addLayer(capCityMarker);
+            };
+
+            for (let i = 0; i < result.data.capCityParks.items.length; i++) {
+                parkName = result.data.capCityParks.items[i].title;
+                parkLat = result.data.capCityParks.items[i].position.lat;
+                parkLng = result.data.capCityParks.items[i].position.lng;
+                var capCityMarker = L.marker(new L.LatLng(parkLat, parkLng)).bindPopup(parkName);
+                capCityCluster.addLayer(capCityMarker);
+            };
+            
+            for (let i = 0; i < result.data.capCityRestaurants.items.length; i++) {
+                restaurantName = result.data.capCityRestaurants.items[i].title;
+                restaurantLat = result.data.capCityRestaurants.items[i].position.lat;
+                restaurantLng = result.data.capCityRestaurants.items[i].position.lng;
+                var capCityMarker = L.marker(new L.LatLng(restaurantLat, restaurantLng)).bindPopup(restaurantName);
+                capCityCluster.addLayer(capCityMarker);
+            };
+            
+            map.addLayer(capCityCluster);
 
 
         },
