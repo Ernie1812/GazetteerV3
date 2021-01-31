@@ -30,32 +30,32 @@ var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{
 }).addTo(map);
 
 //easy buttons
-L.easyButton('<img src="assets/img/icons/wikipedia.png" width="20vw" height="20vh">', function(){
+L.easyButton('<i class="fab fa-wikipedia-w"></i>', function(){
     $('#wikiModal').modal('show');
-}).addTo(map);
+}, 'Country Wikipedia Infomation').addTo(map);
 
-L.easyButton('<img src="assets/img/icons/icons8-partly-cloudy-day-24.png" width="20vw" height="20vh">', function(){
+L.easyButton('<i class="fas fa-cloud-sun"></i>', function(){
     $('#weatherModal').modal('show');
-}).addTo(map);
+}, 'Weather').addTo(map);
 
-L.easyButton('<img src="assets/img/icons/newspaper.png" width="20vw" height="20vh">', function(){
+L.easyButton('<i class="far fa-newspaper"></i>', function(){
     $('#newsModal').modal('show');
-}).addTo(map);
+}, 'News').addTo(map);
 
-L.easyButton('<img src="assets/img/icons/icons8-paper-money-24.png" width="20vw" height="20vh">', function(){
+L.easyButton('<i class="fas fa-money-bill-wave"></i>', function(){
     $('#currencyModal').modal('show');
-}).addTo(map);
+}, 'Currency Information').addTo(map);
 
-L.easyButton('<img src="assets/img/icons/coronavirus.png" width="20vw" height="20vh">', function(){
+L.easyButton('<i class="fas fa-virus"></i>', function(){
         $('#covidModal').modal('show');
-}).addTo(map);
+}, 'Covid-19 Information').addTo(map);
 
 //UNESCO Markers Toggle
 let unescoToggle = L.easyButton({
     states: [{
       stateName: 'add-markers',
-      icon: '<img src="assets/img/icons/unesco.png" width="20vw" height="20vh">',
-      title: 'UNESCO World Heritage Sites',
+      icon: '<i class="fas fa-landmark"></i>',
+      title: 'UNESCO (Cultural) World Heritage Sites',
       onClick: function(control) {
         if(unescoNumber === 0) {
             $('#unescoModal').modal('show');
@@ -72,7 +72,7 @@ let unescoToggle = L.easyButton({
         map.removeLayer(unescoLayerGroup);
         control.state('add-markers');
       },
-      title: 'remove UNESCO markers'
+      title: 'Remove UNESCO Markers'
     }]
   }).addTo(map);
 
@@ -80,8 +80,8 @@ let unescoToggle = L.easyButton({
 let capcityToggle = L.easyButton({
     states: [{
       stateName: 'add-markers',
-      icon: '<img src="assets/img/icons/hospital.png" width="20vw" height="20vh">',
-      title: 'Capital City Places',
+      icon: '<i class="fas fa-city"></i>',
+      title: 'Places of Interest',
       onClick: function(control) {
         map.addLayer(capCityCluster);
         control.state('remove-markers');
@@ -94,7 +94,7 @@ let capcityToggle = L.easyButton({
         map.removeLayer(capCityCluster);
         control.state('add-markers');
       },
-      title: 'remove capital city markers'
+      title: 'Remove Places of Interest'
     }]
   }).addTo(map);
 
@@ -303,42 +303,81 @@ $('#selCountry').on('change', function() {
             capCityCluster = L.markerClusterGroup();
 
             for (let i = 0; i < result.data.capCityHospitals.items.length; i++) {
+                var hospitalIcon = L.icon({
+                    iconUrl: 'assets/img/icons/hospital.png',
+                    iconSize: [50, 50],
+                    popupAnchor: [0,-15]
+                    });
                 hospitalName = result.data.capCityHospitals.items[i].title;
                 hospitalLat = result.data.capCityHospitals.items[i].position.lat;
                 hospitalLng = result.data.capCityHospitals.items[i].position.lng;
-                var capCityMarker = L.marker(new L.LatLng(hospitalLat, hospitalLng)).bindPopup(hospitalName);
+
+                var capCityMarker = L.marker(new L.LatLng(hospitalLat, hospitalLng), ({icon: hospitalIcon})).bindPopup(hospitalName);
                 capCityCluster.addLayer(capCityMarker);
             };
             
             for (let i = 0; i < result.data.capCityAirports.items.length; i++) {
+                var airportIcon = L.icon({
+                    iconUrl: 'assets/img/icons/airport.png',
+                    iconSize: [50, 50],
+                    popupAnchor: [0,-15]
+                    });
                 airportName = result.data.capCityAirports.items[i].title;
                 airportLat = result.data.capCityAirports.items[i].position.lat;
                 airportLng = result.data.capCityAirports.items[i].position.lng;
-                var capCityMarker = L.marker(new L.LatLng(airportLat, airportLng)).bindPopup(airportName);
+                var capCityMarker = L.marker(new L.LatLng(airportLat, airportLng), ({icon: airportIcon})).bindPopup(airportName);
                 capCityCluster.addLayer(capCityMarker);
             };
 
             for (let i = 0; i < result.data.capCityHotels.items.length; i++) {
+                var hotelIcon = L.icon({
+                    iconUrl: 'assets/img/icons/hotel.png',
+                    iconSize: [50, 50],
+                    popupAnchor: [0,-15]
+                    });
                 hotelName = result.data.capCityHotels.items[i].title;
                 hotelLat = result.data.capCityHotels.items[i].position.lat;
                 hotelLng = result.data.capCityHotels.items[i].position.lng;
-                var capCityMarker = L.marker(new L.LatLng(hotelLat, hotelLng)).bindPopup(hotelName);
+                var capCityMarker = L.marker(new L.LatLng(hotelLat, hotelLng), ({icon: hotelIcon})).bindPopup(hotelName);
                 capCityCluster.addLayer(capCityMarker);
             };
 
             for (let i = 0; i < result.data.capCityParks.items.length; i++) {
+                var parkIcon = L.icon({
+                    iconUrl: 'assets/img/icons/park.png',
+                    iconSize: [50, 50],
+                    popupAnchor: [0,-15]
+                    });
                 parkName = result.data.capCityParks.items[i].title;
                 parkLat = result.data.capCityParks.items[i].position.lat;
                 parkLng = result.data.capCityParks.items[i].position.lng;
-                var capCityMarker = L.marker(new L.LatLng(parkLat, parkLng)).bindPopup(parkName);
+                var capCityMarker = L.marker(new L.LatLng(parkLat, parkLng), ({icon: parkIcon})).bindPopup(parkName);
                 capCityCluster.addLayer(capCityMarker);
             };
             
             for (let i = 0; i < result.data.capCityRestaurants.items.length; i++) {
+                var restaurantIcon = L.icon({
+                    iconUrl: 'assets/img/icons/icons8-dining-room-48.png',
+                    iconSize: [50, 50],
+                    popupAnchor: [0,-15]
+                    });
                 restaurantName = result.data.capCityRestaurants.items[i].title;
                 restaurantLat = result.data.capCityRestaurants.items[i].position.lat;
                 restaurantLng = result.data.capCityRestaurants.items[i].position.lng;
-                var capCityMarker = L.marker(new L.LatLng(restaurantLat, restaurantLng)).bindPopup(restaurantName);
+                var capCityMarker = L.marker(new L.LatLng(restaurantLat, restaurantLng), ({icon: restaurantIcon})).bindPopup(restaurantName);
+                capCityCluster.addLayer(capCityMarker);
+            };
+
+            for (let i = 0; i < result.data.capCityMuseums.items.length; i++) {
+                var museumIcon = L.icon({
+                    iconUrl: 'assets/img/icons/museum.png',
+                    iconSize: [50, 50],
+                    popupAnchor: [0,-15]
+                    });
+                museumName = result.data.capCityMuseums.items[i].title;
+                museumLat = result.data.capCityMuseums.items[i].position.lat;
+                museumLng = result.data.capCityMuseums.items[i].position.lng;
+                var capCityMarker = L.marker(new L.LatLng(museumLat, museumLng), ({icon: museumIcon})).bindPopup(museumName);
                 capCityCluster.addLayer(capCityMarker);
             };
 

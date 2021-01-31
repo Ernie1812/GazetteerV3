@@ -260,6 +260,20 @@
 
     $capCityRestaurants= json_decode($result,true);
 
+    //capital city museums
+    $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=museum&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=25&apiKey=JrMv7faeaOpGnJXd_VwW11pu8AoiIgEy_O29cZHOtMQ';
+
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_URL,$url);
+
+	$result=curl_exec($ch);
+
+	curl_close($ch);
+
+    $capCityMuseums = json_decode($result,true);
+
     //output status
     $output['status']['code'] = "200";
     $output['status']['name'] = "ok";
@@ -279,6 +293,7 @@
     $output['data']['capCityHotels'] = $capCityHotels;
     $output['data']['capCityParks'] = $capCityParks;
     $output['data']['capCityRestaurants'] = $capCityRestaurants;
+    $output['data']['capCityMuseums'] = $capCityMuseums;
 
     header('Content-Type: application/json; charset=UTF-8');
 
