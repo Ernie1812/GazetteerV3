@@ -223,10 +223,6 @@ $('#selCountry').on('change', function() {
             //UNESCO Sites
             var unescoLayerGroup = L.layerGroup();
 
-            if (unescoLayerGroup) {
-                unescoLayerGroup.clearLayers();
-            }
-
             for (let i = 0; i < result.data.unescoSites.records.length; i++) {
 
                 var unescoIcon = L.icon({
@@ -244,11 +240,31 @@ $('#selCountry').on('change', function() {
                 unescoLayerGroup.addLayer(unescoMarker);
            };
 
-           var overlay = {'UNESCO World Heritage Sites': unescoLayerGroup};
-           L.control.layers(null, overlay).addTo(map);
+           var toggle = L.easyButton({
+            states: [{
+              stateName: 'add-markers',
+              icon: '<img src="assets/img/icons/unesco.png" width="20vw" height="20vh">',
+              title: 'UNESCO World Heritage Sites',
+              onClick: function(control) {
+                map.addLayer(unescoLayerGroup);
+                control.state('remove-markers');
+              }
+            }, {
+              icon: 'fa-undo',
+              stateName: 'remove-markers',
+              onClick: function(control) {
+                map.removeLayer(unescoLayerGroup);
+                control.state('add-markers');
+              },
+              title: 'remove markers'
+            }]
+          });
+
+          if (result.data.unescoSites.nhits > 0) {
+             toggle.addTo(map); 
+          };
+          
             
-
-
 
         },
         error: function(jqXHR, textStatus, errorThrown) {
