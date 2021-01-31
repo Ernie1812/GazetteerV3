@@ -3,14 +3,8 @@ let border;
 let currentCountry;
 
 let capitalCityName;
-
 let unescoLayerGroup;
-let unescoIcon;
-let unescoSite;
-let unescoLat;
-let unescoLng;
-let unescoMarker;
-let unescoNumber;
+var unsecoToggle = null;
 
 //load gif while waiting
 $(document).ajaxStart(function(){
@@ -46,33 +40,8 @@ L.easyButton('<img src="assets/img/icons/icons8-paper-money-24.png" width="20vw"
 
 L.easyButton('<img src="assets/img/icons/coronavirus.png" width="20vw" height="20vh">', function(){
         $('#covidModal').modal('show');
-}).addTo(map);
+}).addTo(map);;
 
-//UNESCO Markers Toggle
-let unescoToggle = L.easyButton({
-    states: [{
-      stateName: 'add-markers',
-      icon: '<img src="assets/img/icons/unesco.png" width="20vw" height="20vh">',
-      title: 'UNESCO World Heritage Sites',
-      onClick: function(control) {
-        if(unescoNumber === 0) {
-            $('#unescoModal').modal('show');
-            $( "[title]='UNESCO World Heritage Sites'" ).removeClass( "remove-markers-active" ).addClass( "add-markers-active" );
-        };
-        map.addLayer(unescoLayerGroup);
-        control.state('remove-markers');
-        
-      }
-    }, {
-      icon: 'fa-undo',
-      stateName: 'remove-markers',
-      onClick: function(control) {
-        map.removeLayer(unescoLayerGroup);
-        control.state('add-markers');
-      },
-      title: 'remove UNESCO markers'
-    }]
-  }).addTo(map);
 
 $(document).ready(function () { 
 //populate select options
@@ -116,9 +85,8 @@ $(document).ready(function () {
 
 //Main 
 $('#selCountry').on('change', function() {
-    //console.clear();
+    console.clear();
     let borderCountryCode = $("#selCountry").val();
-
     $.ajax({
         url: "assets/php/ajaxCalls.php",
         type: 'GET',
@@ -128,7 +96,7 @@ $('#selCountry').on('change', function() {
             },
         success: function(result) {
             console.log('test', result);
-            
+        
             //adds borders
             if (map.hasLayer(border)) {
                 map.removeLayer(border);
@@ -147,6 +115,7 @@ $('#selCountry').on('change', function() {
                 });
 
             border.addTo(map); 
+            
             
             if (result.status.name == "ok") {
                 //set variables to reuse
@@ -254,29 +223,55 @@ $('#selCountry').on('change', function() {
             }
 
             //UNESCO Sites
-            unescoNumber = result.data.unescoSites.nhits;
             unescoLayerGroup = L.layerGroup();
-                for (let i = 0; i < result.data.unescoSites.records.length; i++) {
 
-                    unescoIcon = L.icon({
-                        iconUrl: 'assets/img/icons/unesco.png',
-                        iconSize: [20, 30], // size of the icon
-                        popupAnchor: [0,-15]
+            for (let i = 0; i < result.data.unescoSites.records.length; i++) {
+
+                const unescoIcon = L.icon({
+                    
+                    iconUrl: 'assets/img/icons/unesco.png',
+                    iconSize: [20, 30], // size of the icon
+                    popupAnchor: [0,-15]
                     });
-                    
-                    unescoSite = result.data.unescoSites.records[i].fields.site;
-                    unescoLat = result.data.unescoSites.records[i].fields.coordinates[0];
-                    unescoLng = result.data.unescoSites.records[i].fields.coordinates[1];
-                    
-                    unescoMarker = L.marker(new L.LatLng(unescoLat, unescoLng), ({icon: unescoIcon})).bindPopup(`<h3>${unescoSite}</h3><p>${result.data.unescoSites.records[i].fields.short_description}</p>`);
-                    unescoLayerGroup.addLayer(unescoMarker);
-            };
+                
+                let unescoSite = result.data.unescoSites.records[i].fields.site;
+                let unescoLat = result.data.unescoSites.records[i].fields.coordinates[0];
+                let unescoLng = result.data.unescoSites.records[i].fields.coordinates[1];
+                
+                let unescoMarker = L.marker(new L.LatLng(unescoLat, unescoLng), ({icon: unescoIcon})).bindPopup(`<h3>${unescoSite}</h3><p>${result.data.unescoSites.records[i].fields.short_description}</p>`);
+                unescoLayerGroup.addLayer(unescoMarker);
+           };
 
+        unescoToggle = L.easyButton({
+            states: [{
+              stateName: 'add-markers',
+              icon: '<img src="assets/img/icons/unesco.png" width="20vw" height="20vh">',
+              title: 'UNESCO World Heritage Sites',
+              onClick: function(control) {
+                map.addLayer(unescoLayerGroup);
+                control.state('remove-markers');
+              }
+            }, {
+              icon: 'fa-undo',
+              stateName: 'remove-markers',
+              onClick: function(control) {
+                map.removeLayer(unescoLayerGroup);
+                control.state('add-markers');
+              },
+              title: 'remove markers'
+            }]
+          }).addTo(map);
+
+          if (unsecoToggle) {
+            map.removeControl(unsecoToggle);
+            unescoToggle.addTo(map);
+          } else {
+            map.removeControl(unescoToggle);
+          };
+          
+            
 
         },
-
-
-
         error: function(jqXHR, textStatus, errorThrown) {
             console.log('test',textStatus, errorThrown);
         }

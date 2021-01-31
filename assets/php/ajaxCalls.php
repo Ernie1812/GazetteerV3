@@ -162,7 +162,7 @@
                             'header' => $headers,
                             'method' => 'GET' ));
         $context = stream_context_create($options);
-        $result = file_get_contents($url . "?q=" . urlencode($query)."&originalImg=true&setLang=en", false, $context);
+        $result = file_get_contents($url . "?q=" . urlencode($query)."&originalImg=true&setLang=en&count=6", false, $context);
         $headers = array();
         foreach ($http_response_header as $k => $v) {
             $h = explode(":", $v, 2);
