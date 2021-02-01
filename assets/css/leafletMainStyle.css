@@ -19,7 +19,7 @@
 }
 
 body { 
-  background-color: #A41623 !important; 
+  background-color: #67bfe7 !important; 
 }
 
 
@@ -35,15 +35,28 @@ body {
 .modal-body {
   height: auto;
   overflow-y: auto;
-  background-color: #FFD29D;
+  color: #67bfe7;
   border-color: lightslategrey;
+  background-color: #212529;
 }
 
 .modal-header,
 .modal-footer {
-  background-color: #918450;
+  background-color: #212529;
   border-color: lightslategray;
-  color: #A41623;
+  color: #67bfe7;
+}
+
+table, th, tr {
+  color: #67bfe7;
+}
+
+.btn-close{
+  background-color: #67bfe7;
+}
+
+.btn {
+  background-color: #447288;
 }
 
 
