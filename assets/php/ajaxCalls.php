@@ -112,27 +112,27 @@
     $covid = json_decode($result,true);
     
     //Currency Exchange Rates
-    $url='http://data.fixer.io/api/latest?access_key=54b8d05cf6bc98c297a61ffa4e922dd0';
+    // $url='http://data.fixer.io/api/latest?access_key=54b8d05cf6bc98c297a61ffa4e922dd0';
 
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_URL,$url);
+	// $ch = curl_init();
+	// curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	// curl_setopt($ch, CURLOPT_URL,$url);
 
-	$result=curl_exec($ch);
+	// $result=curl_exec($ch);
 
-	curl_close($ch);
+	// curl_close($ch);
 
-    $exchangeRates = json_decode($result,true);
+    // $exchangeRates = json_decode($result,true);
 
-    foreach ($exchangeRates['rates'] as $code => $rate) {
-        if ($code ==  $currentCurrency) {
-            $output['data']['currentRate'] = $rate;
-            break;
-        } else {
-            $output['data']['currentRate'] = 'Rate not available';
-        }
-    }
+    // foreach ($exchangeRates['rates'] as $code => $rate) {
+    //     if ($code ==  $currentCurrency) {
+    //         $output['data']['currentRate'] = $rate;
+    //         break;
+    //     } else {
+    //         $output['data']['currentRate'] = 'Rate not available';
+    //     }
+    // }
 
     //Wiki Country Excerpt
     $url='https://en.wikipedia.org/api/rest_v1/page/summary/' . $wikiCountryName .'?redirect=true';
@@ -150,31 +150,31 @@
 	$wikiCountryExcerpt = json_decode($result,true);	
 
     //Bing News API
-    $accessKey = '0a06c1feb63e425ebe3a8258b407f917';
+    // $accessKey = '0a06c1feb63e425ebe3a8258b407f917';
 
-    $endpoint = 'https://api.bing.microsoft.com/v7.0/news/search';
+    // $endpoint = 'https://api.bing.microsoft.com/v7.0/news/search';
 
-    $term = $countryName;
+    // $term = $countryName;
 
-    function BingNewsSearch ($url, $key, $query) {
-        $headers = "Ocp-Apim-Subscription-Key: $key\r\n";
-        $options = array ('http' => array (
-                            'header' => $headers,
-                            'method' => 'GET' ));
-        $context = stream_context_create($options);
-        $result = file_get_contents($url . "?q=" . urlencode($query)."&originalImg=true&setLang=en&count=6", false, $context);
-        $headers = array();
-        foreach ($http_response_header as $k => $v) {
-            $h = explode(":", $v, 2);
-            if (isset($h[1]))
-                if (preg_match("/^BingAPIs-/", $h[0]) || preg_match("/^X-MSEdge-/", $h[0]))
-                    $headers[trim($h[0])] = trim($h[1]);
-        }
-        return array($headers, $result);
-    }
-    list($headers, $json) = BingNewsSearch($endpoint, $accessKey, $term);
+    // function BingNewsSearch ($url, $key, $query) {
+    //     $headers = "Ocp-Apim-Subscription-Key: $key\r\n";
+    //     $options = array ('http' => array (
+    //                         'header' => $headers,
+    //                         'method' => 'GET' ));
+    //     $context = stream_context_create($options);
+    //     $result = file_get_contents($url . "?q=" . urlencode($query)."&originalImg=true&setLang=en&count=6", false, $context);
+    //     $headers = array();
+    //     foreach ($http_response_header as $k => $v) {
+    //         $h = explode(":", $v, 2);
+    //         if (isset($h[1]))
+    //             if (preg_match("/^BingAPIs-/", $h[0]) || preg_match("/^X-MSEdge-/", $h[0]))
+    //                 $headers[trim($h[0])] = trim($h[1]);
+    //     }
+    //     return array($headers, $result);
+    // }
+    // list($headers, $json) = BingNewsSearch($endpoint, $accessKey, $term);
 
-    $bingNews = json_decode($json, true);
+    // $bingNews = json_decode($json, true);
 
     //UNESCO Sites
     $url='https://data.opendatasoft.com/api/records/1.0/search/?dataset=world-heritage-list%40public-us&q='.$countryFullName.'&rows=20&sort=date_inscribed&facet=category&facet=region&facet=states&refine.category=Cultural&refine.states='.$countryFullName;
@@ -284,9 +284,9 @@
     $output['data']['userIpInfo'] = $UserIp;
     $output['data']['weather'] = $weather;
     $output['data']['covidData'] = $covid;
-    $output['data']['exchangeRates'] = $exchangeRates;
+    //$output['data']['exchangeRates'] = $exchangeRates;
     $output['data']['wikiCountryExcerpt'] = $wikiCountryExcerpt;
-    $output['data']['BingNews'] = $bingNews['value'];
+    // $output['data']['BingNews'] = $bingNews['value'];
     $output['data']['unescoSites'] = $unesco;
     $output['data']['capCityHospitals'] = $capCityHospitals;
     $output['data']['capCityAirports'] = $capCityAirports;

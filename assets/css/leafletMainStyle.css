@@ -1,5 +1,51 @@
 .leaflet-bar { line-height:30px; };
 
+#loading {
+  background: #e9e9e9;          
+  position: absolute; 
+  top: 0;                  
+  right: 0;                
+  bottom: 0;
+  left: 0;
+  opacity: 0.5;
+  z-index: 10002;
+  
+}
+#loading-img {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+
+}
+
+body { 
+  background-color: #A41623 !important; 
+}
+
+
+#map {
+  height: 85vh; 
+  width: 98vw; 
+  margin: 0 auto;
+}
+
+.leaflet-container {
+  background-color:rgba(255,0,0,0.0);
+}
+.modal-body {
+  height: auto;
+  overflow-y: auto;
+  background-color: #FFD29D;
+  border-color: lightslategrey;
+}
+
+.modal-header,
+.modal-footer {
+  background-color: #918450;
+  border-color: lightslategray;
+  color: #A41623;
+}
+
 
 /* GLOBAL STYLES
 -------------------------------------------------- */

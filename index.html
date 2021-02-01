@@ -20,14 +20,29 @@
 
 <body>
   
-  <nav class="navbar navbar-light d-flex justify-content-start">
-    <h3>Choose a country: </h3>
-    <select name="sel-country" id="selCountry"></select>
-  </nav>
+  <header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Gazetteer</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <form class="d-flex align-items-end">
+            <select name="sel-country" id="selCountry" class="form-select" aria-label="Select Country" style="width:auto;"></select>
+          </form>
+        </div>
+      </div>
+    </nav>
+  </header>
+
   <div id="loading">
-      <p><img src="http://i.stack.imgur.com/FhHRx.gif"/> Please Wait</p>
-    </div>
-  <div id="map" style="height: 75vh; width: 90vw; "></div>
+      <div id="loading-img">
+        <p><img src="http://i.stack.imgur.com/FhHRx.gif"/> Loading...</p>
+      </div>
+  </div>
+
+  <div id="map"></div>
   
   <!--Wikipedia Modal -->
   <div class="modal fade" id="wikiModal" tabindex="-1" aria-labelledby="wikiModalLabel" aria-hidden="true">

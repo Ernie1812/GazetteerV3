@@ -216,11 +216,11 @@ $('#selCountry').on('change', function() {
                 let currencyCode = result.data.restCountries.currencies[0].code;
                 let currencyName = result.data.restCountries.currencies[0].name;
                 let currencySymbol = result.data.restCountries.currencies[0].symbol;
-                let exchangeRate = result.data.currentRate;
+                // let exchangeRate = result.data.currentRate;
                 $('#txtCurrencySymbol').html(currencySymbol);
                 $('#txtCurrency').html(currencyName);
                 $('#txtCurrencyCode').html(currencyCode);
-                $('#txtRate').html( exchangeRate.toFixed(2) + ' ' + currencyCode + ' to 1 EURO.');
+                // $('#txtRate').html( exchangeRate.toFixed(2) + ' ' + currencyCode + ' to 1 EURO.');
 
                 //wiki country summary
                 $('#txtWikiImg').html('<img src=' + result.data.wikiCountryExcerpt.thumbnail.source +'><br>');
@@ -228,56 +228,56 @@ $('#selCountry').on('change', function() {
 
 
                 //news
-                if ( result.data.BingNews[0].image) {
-                    $('#overlay0').remove();
-                    $('#imgArticleZeroContainer').append(`<div id="overlay0" class="overlay-image" style="background-image: url(${result.data.BingNews[0].image.contentUrl});"></div>`);
-                } else {
-                    $('#overlay0').remove();
-                    $('#imgArticleZeroContainer').append(`<div id="overlay0" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
-                }
-                if ( result.data.BingNews[1].image) {
-                    $('#overlay1').remove();
-                    $('#imgArticleOneContainer').append(`<div id="overlay1" class="overlay-image" style="background-image: url(${result.data.BingNews[1].image.contentUrl});"></div>`);
-                } else {         
-                    $('#overlay1').remove();                                                                                           
-                    $('#imgArticleOneContainer').append(`<div id="overlay1" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
-                }
-                if ( result.data.BingNews[2].image) {
-                    $('#overlay2').remove()
-                    $('#imgArticleTwoContainer').append(`<div id="overlay2" class="overlay-image" style="background-image: url(${result.data.BingNews[2].image.contentUrl});"></div>`);
-                } else {
-                    $('#overlay2').remove()
-                    $('#imgArticleTwoContainer').append(`<div id="overlay2" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
-                }
-                if ( result.data.BingNews[3].image) {
-                    $('#overlay3').remove();
-                    $('#imgArticleThreeContainer').append(`<div id="overlay3" class="overlay-image" style="background-image: url(${result.data.BingNews[3].image.contentUrl});"></div>`);
-                } else {
-                    $('#imgArticleThreeContainer').append(`<div id="overlay3" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
-                }
-                if ( result.data.BingNews[4].image) {
-                    $('#overlay4').remove();
-                    $('#imgArticleFourContainer').append(`<div id="overlay4" class="overlay-image" style="background-image: url(${result.data.BingNews[4].image.contentUrl});"></div>`);
-                } else {
-                    $('#overlay4').remove();
-                    $('#imgArticleFourContainer').append(`<div id="overlay4" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
-                }
+            //     if ( result.data.BingNews[0].image) {
+            //         $('#overlay0').remove();
+            //         $('#imgArticleZeroContainer').append(`<div id="overlay0" class="overlay-image" style="background-image: url(${result.data.BingNews[0].image.contentUrl});"></div>`);
+            //     } else {
+            //         $('#overlay0').remove();
+            //         $('#imgArticleZeroContainer').append(`<div id="overlay0" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
+            //     }
+            //     if ( result.data.BingNews[1].image) {
+            //         $('#overlay1').remove();
+            //         $('#imgArticleOneContainer').append(`<div id="overlay1" class="overlay-image" style="background-image: url(${result.data.BingNews[1].image.contentUrl});"></div>`);
+            //     } else {         
+            //         $('#overlay1').remove();                                                                                           
+            //         $('#imgArticleOneContainer').append(`<div id="overlay1" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
+            //     }
+            //     if ( result.data.BingNews[2].image) {
+            //         $('#overlay2').remove()
+            //         $('#imgArticleTwoContainer').append(`<div id="overlay2" class="overlay-image" style="background-image: url(${result.data.BingNews[2].image.contentUrl});"></div>`);
+            //     } else {
+            //         $('#overlay2').remove()
+            //         $('#imgArticleTwoContainer').append(`<div id="overlay2" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
+            //     }
+            //     if ( result.data.BingNews[3].image) {
+            //         $('#overlay3').remove();
+            //         $('#imgArticleThreeContainer').append(`<div id="overlay3" class="overlay-image" style="background-image: url(${result.data.BingNews[3].image.contentUrl});"></div>`);
+            //     } else {
+            //         $('#imgArticleThreeContainer').append(`<div id="overlay3" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
+            //     }
+            //     if ( result.data.BingNews[4].image) {
+            //         $('#overlay4').remove();
+            //         $('#imgArticleFourContainer').append(`<div id="overlay4" class="overlay-image" style="background-image: url(${result.data.BingNews[4].image.contentUrl});"></div>`);
+            //     } else {
+            //         $('#overlay4').remove();
+            //         $('#imgArticleFourContainer').append(`<div id="overlay4" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
+            //     }
 
-                $('#txtArticleNameZero').text(result.data.BingNews[0].name);
-                $('#articleLinkZero').attr("href", result.data.BingNews[0].url);
+            //     $('#txtArticleNameZero').text(result.data.BingNews[0].name);
+            //     $('#articleLinkZero').attr("href", result.data.BingNews[0].url);
 
-                $('#txtArticleNameOne').text(result.data.BingNews[1].name);
-                $('#articleLinkOne').attr("href", result.data.BingNews[1].url);
+            //     $('#txtArticleNameOne').text(result.data.BingNews[1].name);
+            //     $('#articleLinkOne').attr("href", result.data.BingNews[1].url);
 
-                $('#txtArticleNameTwo').text(result.data.BingNews[2].name);
-                $('#articleLinkTwo').attr("href", result.data.BingNews[2].url);    
+            //     $('#txtArticleNameTwo').text(result.data.BingNews[2].name);
+            //     $('#articleLinkTwo').attr("href", result.data.BingNews[2].url);    
 
-                $('#txtArticleNameThree').text(result.data.BingNews[3].name);
-                $('#articleLinkThree').attr("href", result.data.BingNews[3].url);
+            //     $('#txtArticleNameThree').text(result.data.BingNews[3].name);
+            //     $('#articleLinkThree').attr("href", result.data.BingNews[3].url);
 
-                $('#txtArticleNameFour').text(result.data.BingNews[4].name);
+            //     $('#txtArticleNameFour').text(result.data.BingNews[4].name);
 
-                $('#articleLinkFour').attr("href", result.data.BingNews[4].url);
+            //     $('#articleLinkFour').attr("href", result.data.BingNews[4].url);
             }
 
             //UNESCO Sites
