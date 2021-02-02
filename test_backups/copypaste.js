@@ -1,3 +1,42 @@
+ // //JSON file Capital City Info with Coordinates and add marker
+    // $.ajax({
+    //     url:'assets/php/capitals.php',
+    //     type: 'POST',
+    //     dataType: 'json',
+        
+    //     success: function(result) {
+    //         console.log('Country Capitals Data', result);
+    //         let countryCapitalsArray = [];
+    //         for (let i = 0; i < result.countryCapitals.length; i++) {
+    //             if (result.countryCapitals[i].CountryCode === borderCountryCode) {
+    //                 countryCapitalsArray.push(result.countryCapitals[i]);
+    //             }
+    //         };
+            
+    //         capitalCityLat = countryCapitalsArray[0].CapitalLatitude;
+    //         capitalCityLon = countryCapitalsArray[0].CapitalLongitude;
+    //         capitalCityName = countryCapitalsArray[0].CapitalName;
+    //         countryName2 = countryCapitalsArray[0].CountryName;
+    //         countryName = countryName2.replace(/\s+/g, '_');
+    //         console.log("Country Capital Array", countryCapitalsArray, countryName);
+
+    //         var capitalCityIcon = L.icon({
+    //             iconUrl: 'assets/img/icons/capital.png',
+    //             iconSize: [20, 20],
+    //             popupAnchor: [0,-15]
+    //             });
+    //         var capitalMarker = L.marker(new L.LatLng(capitalCityLat, capitalCityLon), ({icon: capitalCityIcon})).bindPopup(`Capital: ${capitalCityName}`).addTo(map);
+    //     },
+        
+    //     error: function(jqXHR, textStatus, errorThrown) {
+    //         console.log('Capitals Json Error', textStatus, errorThrown);
+    //     }
+    // });
+
+    // 
+    // }); 
+
+
 var capCityCluster = L.markerClusterGroup();
 
             for (let i = 0; i < result.data.capCityHospitals.items.length; i++) {

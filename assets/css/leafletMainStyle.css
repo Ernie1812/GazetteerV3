@@ -1,3 +1,14 @@
+/* GLOBAL STYLES
+-------------------------------------------------- */
+/* Padding below the footer and lighter body text */
+
+body {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  color: #5a5a5a;
+}
+/* ----------------------------------------------- */
+
 .leaflet-bar { line-height:30px; };
 
 #loading {
@@ -72,13 +83,15 @@ table, th, tr {
   margin: 0 auto;
 }
 
+/* UNESCO marker popup */
 #unescoContainer {
-  height: 40vh;
+  max-height: 40vh;
   padding-right: 1rem;
   overflow-y: auto;
 }
 #unescoThumbnail {
-  float: right;
+  float: left;
+  padding: 0.5rem;
 }
 
 #unescoDescription {
@@ -90,15 +103,11 @@ table, th, tr {
   margin: 0 auto;
 }
 
-/* GLOBAL STYLES
--------------------------------------------------- */
-/* Padding below the footer and lighter body text */
-
-body {
-  padding-top: 3rem;
-  padding-bottom: 3rem;
-  color: #5a5a5a;
+.card-text{
+  font-size: 1rem !important;
 }
+
+
 
 
 /* CUSTOMIZE THE CAROUSEL

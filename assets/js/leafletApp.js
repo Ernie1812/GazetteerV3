@@ -14,6 +14,7 @@ let unescoNumber;
 
 let capCityCluster;
 
+
 //map
 mapboxgl.accessToken = 'pk.eyJ1IjoiZXN0cmFkYTExMDciLCJhIjoiY2p3cmkxaXE1MWs2ajRibGV4bjZna2cyZyJ9.rfXkxJ59K98sg9us_cOj3w';
 
@@ -83,7 +84,7 @@ let unescoToggle = L.easyButton({
   }).addTo(map);
 
   //Capital City Cluster Easy Button Toggle
-let capcityToggle = L.easyButton({
+let capCityToggle = L.easyButton({
     states: [{
       stateName: 'add-markers',
       icon: '<i class="fas fa-city"></i>',
@@ -184,6 +185,7 @@ $('#selCountry').on('change', function() {
             border.addTo(map); 
             
             if (result.status.name == "ok") {
+                
                 //set variables to reuse
                 countryName = result.data.border.properties.name;
                 capitalCityName = result.data.restCountries.capital;
@@ -224,11 +226,11 @@ $('#selCountry').on('change', function() {
                 let currencyCode = result.data.restCountries.currencies[0].code;
                 let currencyName = result.data.restCountries.currencies[0].name;
                 let currencySymbol = result.data.restCountries.currencies[0].symbol;
-                        // let exchangeRate = result.data.currentRate;
+                let exchangeRate = result.data.currentRate;
                 $('#txtCurrencySymbol').html(currencySymbol);
                 $('#txtCurrency').html(currencyName);
                 $('#txtCurrencyCode').html(currencyCode);
-                        // $('#txtRate').html( exchangeRate.toFixed(2) + ' ' + currencyCode + ' to 1 EURO.');
+                $('#txtRate').html( exchangeRate.toFixed(2) + ' ' + currencyCode + ' to 1 EURO.');
 
                 //wiki country summary
                 let popoulation =  numberWithCommas(result.data.restCountries.population);
@@ -261,57 +263,57 @@ $('#selCountry').on('change', function() {
                 $('#txtWiki').html('<br>Wikipedia: ' + result.data.wikiCountryExcerpt.extract_html +'<br>');
 
 
-                //news
-            //     if ( result.data.BingNews[0].image) {
-            //         $('#overlay0').remove();
-            //         $('#imgArticleZeroContainer').append(`<div id="overlay0" class="overlay-image" style="background-image: url(${result.data.BingNews[0].image.contentUrl});"></div>`);
-            //     } else {
-            //         $('#overlay0').remove();
-            //         $('#imgArticleZeroContainer').append(`<div id="overlay0" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
-            //     }
-            //     if ( result.data.BingNews[1].image) {
-            //         $('#overlay1').remove();
-            //         $('#imgArticleOneContainer').append(`<div id="overlay1" class="overlay-image" style="background-image: url(${result.data.BingNews[1].image.contentUrl});"></div>`);
-            //     } else {         
-            //         $('#overlay1').remove();                                                                                           
-            //         $('#imgArticleOneContainer').append(`<div id="overlay1" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
-            //     }
-            //     if ( result.data.BingNews[2].image) {
-            //         $('#overlay2').remove()
-            //         $('#imgArticleTwoContainer').append(`<div id="overlay2" class="overlay-image" style="background-image: url(${result.data.BingNews[2].image.contentUrl});"></div>`);
-            //     } else {
-            //         $('#overlay2').remove()
-            //         $('#imgArticleTwoContainer').append(`<div id="overlay2" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
-            //     }
-            //     if ( result.data.BingNews[3].image) {
-            //         $('#overlay3').remove();
-            //         $('#imgArticleThreeContainer').append(`<div id="overlay3" class="overlay-image" style="background-image: url(${result.data.BingNews[3].image.contentUrl});"></div>`);
-            //     } else {
-            //         $('#imgArticleThreeContainer').append(`<div id="overlay3" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
-            //     }
-            //     if ( result.data.BingNews[4].image) {
-            //         $('#overlay4').remove();
-            //         $('#imgArticleFourContainer').append(`<div id="overlay4" class="overlay-image" style="background-image: url(${result.data.BingNews[4].image.contentUrl});"></div>`);
-            //     } else {
-            //         $('#overlay4').remove();
-            //         $('#imgArticleFourContainer').append(`<div id="overlay4" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
-            //     }
+                //Bing News
+                if ( result.data.BingNews[0].image) {
+                    $('#overlay0').remove();
+                    $('#imgArticleZeroContainer').append(`<div id="overlay0" class="overlay-image" style="background-image: url(${result.data.BingNews[0].image.contentUrl});"></div>`);
+                } else {
+                    $('#overlay0').remove();
+                    $('#imgArticleZeroContainer').append(`<div id="overlay0" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
+                }
+                if ( result.data.BingNews[1].image) {
+                    $('#overlay1').remove();
+                    $('#imgArticleOneContainer').append(`<div id="overlay1" class="overlay-image" style="background-image: url(${result.data.BingNews[1].image.contentUrl});"></div>`);
+                } else {         
+                    $('#overlay1').remove();                                                                                           
+                    $('#imgArticleOneContainer').append(`<div id="overlay1" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
+                }
+                if ( result.data.BingNews[2].image) {
+                    $('#overlay2').remove()
+                    $('#imgArticleTwoContainer').append(`<div id="overlay2" class="overlay-image" style="background-image: url(${result.data.BingNews[2].image.contentUrl});"></div>`);
+                } else {
+                    $('#overlay2').remove()
+                    $('#imgArticleTwoContainer').append(`<div id="overlay2" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
+                }
+                if ( result.data.BingNews[3].image) {
+                    $('#overlay3').remove();
+                    $('#imgArticleThreeContainer').append(`<div id="overlay3" class="overlay-image" style="background-image: url(${result.data.BingNews[3].image.contentUrl});"></div>`);
+                } else {
+                    $('#imgArticleThreeContainer').append(`<div id="overlay3" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
+                }
+                if ( result.data.BingNews[4].image) {
+                    $('#overlay4').remove();
+                    $('#imgArticleFourContainer').append(`<div id="overlay4" class="overlay-image" style="background-image: url(${result.data.BingNews[4].image.contentUrl});"></div>`);
+                } else {
+                    $('#overlay4').remove();
+                    $('#imgArticleFourContainer').append(`<div id="overlay4" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
+                }
 
-            //     $('#txtArticleNameZero').text(result.data.BingNews[0].name);
-            //     $('#articleLinkZero').attr("href", result.data.BingNews[0].url);
+                $('#txtArticleNameZero').text(result.data.BingNews[0].name);
+                $('#articleLinkZero').attr("href", result.data.BingNews[0].url);
 
-            //     $('#txtArticleNameOne').text(result.data.BingNews[1].name);
-            //     $('#articleLinkOne').attr("href", result.data.BingNews[1].url);
+                $('#txtArticleNameOne').text(result.data.BingNews[1].name);
+                $('#articleLinkOne').attr("href", result.data.BingNews[1].url);
 
-            //     $('#txtArticleNameTwo').text(result.data.BingNews[2].name);
-            //     $('#articleLinkTwo').attr("href", result.data.BingNews[2].url);    
+                $('#txtArticleNameTwo').text(result.data.BingNews[2].name);
+                $('#articleLinkTwo').attr("href", result.data.BingNews[2].url);    
 
-            //     $('#txtArticleNameThree').text(result.data.BingNews[3].name);
-            //     $('#articleLinkThree').attr("href", result.data.BingNews[3].url);
+                $('#txtArticleNameThree').text(result.data.BingNews[3].name);
+                $('#articleLinkThree').attr("href", result.data.BingNews[3].url);
 
-            //     $('#txtArticleNameFour').text(result.data.BingNews[4].name);
+                $('#txtArticleNameFour').text(result.data.BingNews[4].name);
 
-            //     $('#articleLinkFour').attr("href", result.data.BingNews[4].url);
+                $('#articleLinkFour').attr("href", result.data.BingNews[4].url);
             }
 
             //UNESCO Sites
@@ -337,8 +339,8 @@ $('#selCountry').on('change', function() {
 
                     unescoLayerGroup.addLayer(unescoMarker);
 
-            };
-
+                };
+            
             //capital city cluster
             capCityCluster = L.markerClusterGroup();
 
@@ -421,57 +423,85 @@ $('#selCountry').on('change', function() {
                 capCityCluster.addLayer(capCityMarker);
             });
 
+            //Large Cities Clusters
+            for (let i = 0; i < result.data.largeCities.length; i++) {
+                cityName = result.data.largeCities[i].fields.name;
+                cityLat = result.data.largeCities[i].geometry.coordinates[1];
+                cityLng = result.data.largeCities[i].geometry.coordinates[0];
+                
+                //wiki Find Nearby Places
+                $.ajax({
+                    url: "assets/php/wikiFindNearby.php",
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        lat: cityLat,
+                        lng: cityLng,
+                        country: borderCountryCode
+                    },
+                    beforeSend: function() {
+                        $('#loading').show();
+                    },
+                    success: function(result) {
+                        $('#loading').hide();
+                        $('#wikiNearby').html("");
+                        console.log('wikiNearby Data',result);
+                        
+                        if (result.status.name == "ok") {
+                            
+                            let wikiCluster = new L.markerClusterGroup();
+                            
+                            for (let i = 0; i < result.wikiPlaces.length; i++) {
+                                
+                                var wikiPlaceIcon = L.icon({
+                                    iconUrl: 'assets/img/icons/wikipedia.png',
+                                    iconSize: [50, 50], // size of the icon
+                                    popupAnchor: [0,-15]
+                                    });
+                                var customOptions =
+                                    {
+                                    'maxWidth': '500',
+                                    'className' : 'custom'
+                                    }
+
+                                wikiPlaceName = result.wikiPlaces[i].title;
+                                wikiPlaceLat = result.wikiPlaces[i].lat;
+                                wikiPlaceLng = result.wikiPlaces[i].lng;
+                                wikiSummary = result.wikiPlaces[i].summary;
+                                wikiUrl = result.wikiPlaces[i].wikipediaUrl;
+                                wikiThumbnail = result.wikiPlaces[i].thumbnailImg;
+                                
+                                
+                                var customPopup = `<div class="card" style="width: 18rem;"><div class="card-body"><h5 class="card-title">${wikiPlaceName}</h5><img class="img-thumbnail float-right" style="max-width: 100px" src="${wikiThumbnail}" onerror="this.style.display='none'"><p class="card-text" id="wiki-sum">${wikiSummary}</p><a href="//${wikiUrl}" class="card-link">Read more</a><a href="#" class="card-link"></a></div></div>`;
+
+                                wikiPlaceMarker = L.marker(new L.LatLng(wikiPlaceLat, wikiPlaceLng), ({icon: wikiPlaceIcon})).bindPopup(customPopup,customOptions);
+
+                                //wikiCluster.on('click', clickZoom).addLayer(wikiPlaceMarker)
+                                wikiCluster.addLayer(wikiPlaceMarker);
+                                };
+
+                                if (map.hasLayer(wikiCluster)) {
+                                    wikiCluster.clearLayers();
+                                }
+                                wikiCluster.addTo(map);
+                            }
+                    
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log('WikiFindNearby Data Error', textStatus, errorThrown);
+                    }
+                        });
+                    };
+
+            
+
         },
 
-
-
         error: function(jqXHR, textStatus, errorThrown) {
-            console.log('test',textStatus, errorThrown);
+            console.log('Main Call Error',textStatus, errorThrown);
         }
 
     });
-
-
-
-
-    
-    // //JSON file Capital City Info with Coordinates and add marker
-    // $.ajax({
-    //     url:'assets/php/capitals.php',
-    //     type: 'POST',
-    //     dataType: 'json',
-        
-    //     success: function(result) {
-    //         console.log('Country Capitals Data', result);
-    //         let countryCapitalsArray = [];
-    //         for (let i = 0; i < result.countryCapitals.length; i++) {
-    //             if (result.countryCapitals[i].CountryCode === borderCountryCode) {
-    //                 countryCapitalsArray.push(result.countryCapitals[i]);
-    //             }
-    //         };
-            
-    //         capitalCityLat = countryCapitalsArray[0].CapitalLatitude;
-    //         capitalCityLon = countryCapitalsArray[0].CapitalLongitude;
-    //         capitalCityName = countryCapitalsArray[0].CapitalName;
-    //         countryName2 = countryCapitalsArray[0].CountryName;
-    //         countryName = countryName2.replace(/\s+/g, '_');
-    //         console.log("Country Capital Array", countryCapitalsArray, countryName);
-
-    //         var capitalCityIcon = L.icon({
-    //             iconUrl: 'assets/img/icons/capital.png',
-    //             iconSize: [20, 20],
-    //             popupAnchor: [0,-15]
-    //             });
-    //         var capitalMarker = L.marker(new L.LatLng(capitalCityLat, capitalCityLon), ({icon: capitalCityIcon})).bindPopup(`Capital: ${capitalCityName}`).addTo(map);
-    //     },
-        
-    //     error: function(jqXHR, textStatus, errorThrown) {
-    //         console.log('Capitals Json Error', textStatus, errorThrown);
-    //     }
-    // });
-
-    // 
-    // }); 
         
 //end on change code
 });
