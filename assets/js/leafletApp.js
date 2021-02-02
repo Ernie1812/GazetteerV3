@@ -14,14 +14,6 @@ let unescoNumber;
 
 let capCityCluster;
 
-//load gif while waiting
-$(document).ajaxStart(function(){
-    $('#loading').show();
- }).ajaxStop(function(){
-    $('#loading').hide();
- });
-
-
  //map
 mapboxgl.accessToken = 'pk.eyJ1IjoiZXN0cmFkYTExMDciLCJhIjoiY2p3cmkxaXE1MWs2ajRibGV4bjZna2cyZyJ9.rfXkxJ59K98sg9us_cOj3w';
 
@@ -179,7 +171,11 @@ $('#selCountry').on('change', function() {
         data: {
                 countryCode: borderCountryCode
             },
+        beforeSend: function() {
+            $('#loading').show();
+        },
         success: function(result) {
+            $('#loading').hide();
             console.clear();
             console.log('Call Results', result);
             
