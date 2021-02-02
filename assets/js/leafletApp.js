@@ -20,12 +20,10 @@ $(document).ajaxStart(function(){
  }).ajaxStop(function(){
     $('#loading').hide();
  });
-//map
 
+ //map
 var map = L.map('map').fitWorld();
 
-
-//var map = L.map('mapid').setView([48.8566, 2.3515], 11);
 L.tileLayer('https://tile.jawg.io/jawg-streets/{z}/{x}/{y}.png?access-token=B5c7xyU8C9pYj2cSITJ1HHTfUeL6zaLCh8styLvSen0e5nBgU4p53kJ84IWOGAqZ', {}).addTo(map);
 map.attributionControl.addAttribution("<a href=\"https://www.jawg.io\" target=\"_blank\">&copy; Jawg</a> - <a href=\"https://www.openstreetmap.org\" target=\"_blank\">&copy; OpenStreetMap</a>&nbsp;contributors");
 
@@ -144,9 +142,8 @@ $(document).ready(function () {
 //end document. ready
 });
 
-//Main 
+//Main Ajax Call
 $('#selCountry').on('change', function() {
-    //console.clear();
     let borderCountryCode = $("#selCountry").val();
     
     $.ajax({
@@ -187,7 +184,6 @@ $('#selCountry').on('change', function() {
                 //weather info
                 let weatherIcon = result.data.weather.current.weather[0].icon;
                 
-
                 $('#txtCapitalWeatherName').html(capitalCityName);
                 $('#txtCapitalWeatherCurrent').html( Math.round(result.data.weather.current.temp) +'&#8451<br>');
                 $('#txtCapitalWeatherDescription').html( result.data.weather.current.weather[0].description);
@@ -221,11 +217,11 @@ $('#selCountry').on('change', function() {
                 let currencyCode = result.data.restCountries.currencies[0].code;
                 let currencyName = result.data.restCountries.currencies[0].name;
                 let currencySymbol = result.data.restCountries.currencies[0].symbol;
-                // let exchangeRate = result.data.currentRate;
+                        // let exchangeRate = result.data.currentRate;
                 $('#txtCurrencySymbol').html(currencySymbol);
                 $('#txtCurrency').html(currencyName);
                 $('#txtCurrencyCode').html(currencyCode);
-                // $('#txtRate').html( exchangeRate.toFixed(2) + ' ' + currencyCode + ' to 1 EURO.');
+                        // $('#txtRate').html( exchangeRate.toFixed(2) + ' ' + currencyCode + ' to 1 EURO.');
 
                 //wiki country summary
                 $('#txtWikiImg').html('<img src=' + result.data.wikiCountryExcerpt.thumbnail.source +'><br>');
@@ -292,7 +288,7 @@ $('#selCountry').on('change', function() {
 
                     unescoIcon = L.icon({
                         iconUrl: 'assets/img/icons/unesco.png',
-                        iconSize: [20, 30], // size of the icon
+                        iconSize: [50, 50],
                         popupAnchor: [0,-15]
                     });
                     
@@ -307,87 +303,84 @@ $('#selCountry').on('change', function() {
             //capital city cluster
             capCityCluster = L.markerClusterGroup();
 
-            for (let i = 0; i < result.data.capCityHospitals.items.length; i++) {
+            result.data.capCityHospitals.items.forEach(hospital => {
                 var hospitalIcon = L.icon({
                     iconUrl: 'assets/img/icons/hospital.png',
                     iconSize: [50, 50],
                     popupAnchor: [0,-15]
                     });
-                hospitalName = result.data.capCityHospitals.items[i].title;
-                hospitalLat = result.data.capCityHospitals.items[i].position.lat;
-                hospitalLng = result.data.capCityHospitals.items[i].position.lng;
+                hospitalLabel = hospital.address.label;
+                hospitalLat = hospital.position.lat;
+                hospitalLng = hospital.position.lng;
 
-                var capCityMarker = L.marker(new L.LatLng(hospitalLat, hospitalLng), ({icon: hospitalIcon})).bindPopup(hospitalName);
+                var capCityMarker = L.marker(new L.LatLng(hospitalLat, hospitalLng), ({icon: hospitalIcon})).bindPopup(hospitalLabel);
                 capCityCluster.addLayer(capCityMarker);
-            };
+            });
             
-            for (let i = 0; i < result.data.capCityAirports.items.length; i++) {
+            result.data.capCityAirports.items.forEach(airport => {
                 var airportIcon = L.icon({
                     iconUrl: 'assets/img/icons/airport.png',
                     iconSize: [50, 50],
                     popupAnchor: [0,-15]
                     });
-                airportName = result.data.capCityAirports.items[i].title;
-                airportLat = result.data.capCityAirports.items[i].position.lat;
-                airportLng = result.data.capCityAirports.items[i].position.lng;
+                airportName = airport.title;
+                airportLat = airport.position.lat;
+                airportLng = airport.position.lng;
                 var capCityMarker = L.marker(new L.LatLng(airportLat, airportLng), ({icon: airportIcon})).bindPopup(airportName);
                 capCityCluster.addLayer(capCityMarker);
-            };
-
-            for (let i = 0; i < result.data.capCityHotels.items.length; i++) {
+            });
+            
+            result.data.capCityHotels.items.forEach(hotel => {
                 var hotelIcon = L.icon({
                     iconUrl: 'assets/img/icons/hotel.png',
                     iconSize: [50, 50],
                     popupAnchor: [0,-15]
                     });
-                hotelName = result.data.capCityHotels.items[i].title;
-                hotelLat = result.data.capCityHotels.items[i].position.lat;
-                hotelLng = result.data.capCityHotels.items[i].position.lng;
-                var capCityMarker = L.marker(new L.LatLng(hotelLat, hotelLng), ({icon: hotelIcon})).bindPopup(hotelName);
+                hotelLabel = hotel.address.label;
+                hotelLat = hotel.position.lat;
+                hotelLng = hotel.position.lng;
+                var capCityMarker = L.marker(new L.LatLng(hotelLat, hotelLng), ({icon: hotelIcon})).bindPopup(hotelLabel);
                 capCityCluster.addLayer(capCityMarker);
-            };
+            });
 
-            for (let i = 0; i < result.data.capCityParks.items.length; i++) {
+            result.data.capCityParks.items.forEach(park => {
                 var parkIcon = L.icon({
                     iconUrl: 'assets/img/icons/park.png',
                     iconSize: [50, 50],
                     popupAnchor: [0,-15]
                     });
-                parkName = result.data.capCityParks.items[i].title;
-                parkLat = result.data.capCityParks.items[i].position.lat;
-                parkLng = result.data.capCityParks.items[i].position.lng;
-                var capCityMarker = L.marker(new L.LatLng(parkLat, parkLng), ({icon: parkIcon})).bindPopup(parkName);
+                parkLabel = park.address.label;
+                parkLat = park.position.lat;
+                parkLng = park.position.lng;
+                var capCityMarker = L.marker(new L.LatLng(parkLat, parkLng), ({icon: parkIcon})).bindPopup(parkLabel);
                 capCityCluster.addLayer(capCityMarker);
-            };
+            });
             
-            for (let i = 0; i < result.data.capCityRestaurants.items.length; i++) {
+            result.data.capCityRestaurants.items.forEach(restaurant => {
                 var restaurantIcon = L.icon({
                     iconUrl: 'assets/img/icons/icons8-dining-room-48.png',
                     iconSize: [50, 50],
                     popupAnchor: [0,-15]
                     });
-                restaurantName = result.data.capCityRestaurants.items[i].title;
-                restaurantLat = result.data.capCityRestaurants.items[i].position.lat;
-                restaurantLng = result.data.capCityRestaurants.items[i].position.lng;
-                var capCityMarker = L.marker(new L.LatLng(restaurantLat, restaurantLng), ({icon: restaurantIcon})).bindPopup(restaurantName);
+                restaurantLabel = restaurant.address.label;
+                restaurantLat = restaurant.position.lat;
+                restaurantLng = restaurant.position.lng;
+                var capCityMarker = L.marker(new L.LatLng(restaurantLat, restaurantLng), ({icon: restaurantIcon})).bindPopup(restaurantLabel);
                 capCityCluster.addLayer(capCityMarker);
-            };
+            });
 
-            for (let i = 0; i < result.data.capCityMuseums.items.length; i++) {
+            result.data.capCityMuseums.items.forEach(museum => {
                 var museumIcon = L.icon({
                     iconUrl: 'assets/img/icons/museum.png',
                     iconSize: [50, 50],
                     popupAnchor: [0,-15]
                     });
-                museumName = result.data.capCityMuseums.items[i].title;
-                museumLat = result.data.capCityMuseums.items[i].position.lat;
-                museumLng = result.data.capCityMuseums.items[i].position.lng;
-                var capCityMarker = L.marker(new L.LatLng(museumLat, museumLng), ({icon: museumIcon})).bindPopup(museumName);
+                museumLabel = museum.address.label;
+                museumLat = museum.position.lat;
+                museumLng = museum.position.lng;
+                var capCityMarker = L.marker(new L.LatLng(museumLat, museumLng), ({icon: museumIcon})).bindPopup(museumLabel);
                 capCityCluster.addLayer(capCityMarker);
-            };
-
-            
-
+            });
 
         },
 

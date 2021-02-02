@@ -35,20 +35,20 @@ body {
 .modal-body {
   height: auto;
   overflow-y: auto;
-  color: #67bfe7;
-  border-color: lightslategrey;
-  background-color: #212529;
+  color: #000000;
+  border-color: white;
+  background-color: #67bfe7;
 }
 
 .modal-header,
 .modal-footer {
-  background-color: #212529;
+  background-color: #67bfe7;
   border-color: lightslategray;
-  color: #67bfe7;
+  color: #000000;
 }
 
 table, th, tr {
-  color: #67bfe7;
+  color: #000000;
 }
 
 .btn-close{
@@ -56,7 +56,7 @@ table, th, tr {
 }
 
 .btn {
-  background-color: #447288;
+  background-color: #67bfe7;
 }
 
 
