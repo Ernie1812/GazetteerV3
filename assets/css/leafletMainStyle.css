@@ -68,6 +68,27 @@ table, th, tr {
   background-color: #67bfe7;
 }
 
+.table {
+  margin: 0 auto;
+}
+
+#unescoContainer {
+  height: 40vh;
+  padding-right: 1rem;
+  overflow-y: auto;
+}
+#unescoThumbnail {
+  float: right;
+}
+
+#unescoDescription {
+  font-size: 1rem;
+}
+
+#flag {
+  display: block;
+  margin: 0 auto;
+}
 
 /* GLOBAL STYLES
 -------------------------------------------------- */
@@ -131,4 +152,10 @@ body {
     font-size: 1.25rem;
     line-height: 1.4;
   }
+}
+
+@media screen and (min-width: 780px) {
+  .leaflet-bar button,
+  .leaflet-control-zoom-in,
+  .leaflet-control-zoom-out { height: 50px !important; width: 50px !important; font-size: 2.6em; padding: 8px; }
 }

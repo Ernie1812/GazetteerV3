@@ -14,7 +14,7 @@ let unescoNumber;
 
 let capCityCluster;
 
- //map
+//map
 mapboxgl.accessToken = 'pk.eyJ1IjoiZXN0cmFkYTExMDciLCJhIjoiY2p3cmkxaXE1MWs2ajRibGV4bjZna2cyZyJ9.rfXkxJ59K98sg9us_cOj3w';
 
 var jawgStreets = L.tileLayer('https://tile.jawg.io/jawg-streets/{z}/{x}/{y}.png?access-token=B5c7xyU8C9pYj2cSITJ1HHTfUeL6zaLCh8styLvSen0e5nBgU4p53kJ84IWOGAqZ', {
@@ -33,27 +33,12 @@ var baseMaps = {
     "Streets Map": jawgStreets
 };
 
-//var test1 = map.addBaseLayer(jawgStreets, 'Streets');
-
 L.control.layers(baseMaps).addTo(map);
 
-//   streets = L.tileLayer('https://tile.jawg.io/jawg-streets/{z}/{x}/{y}.png?access-token=B5c7xyU8C9pYj2cSITJ1HHTfUeL6zaLCh8styLvSen0e5nBgU4p53kJ84IWOGAqZ', {}).addTo(map);
-//   map.attributionControl.addAttribution("<a href=\"https://www.jawg.io\" target=\"_blank\">&copy; Jawg</a> - <a href=\"https://www.openstreetmap.org\" target=\"_blank\">&copy; OpenStreetMap</a>&nbsp;contributors");
-
-  
-  
-  //.addTo(map);
- 
-
-// var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-// 	maxZoom: 1,
-// 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-// })
-
 //easy buttons
-L.easyButton('<i class="fab fa-wikipedia-w"></i>', function(){
+L.easyButton('<i class="fas fa-info"></i>', function(){
     $('#wikiModal').modal('show');
-}, 'Country Wikipedia Infomation').addTo(map);
+}, 'Country Infomation').addTo(map);
 
 L.easyButton('<i class="fas fa-cloud-sun"></i>', function(){
     $('#weatherModal').modal('show');
@@ -246,8 +231,34 @@ $('#selCountry').on('change', function() {
                         // $('#txtRate').html( exchangeRate.toFixed(2) + ' ' + currencyCode + ' to 1 EURO.');
 
                 //wiki country summary
-                $('#txtWikiImg').html('<img src=' + result.data.wikiCountryExcerpt.thumbnail.source +'><br>');
-                $('#txtWiki').html('Wikipedia: ' + result.data.wikiCountryExcerpt.extract_html +'<br>');
+                let popoulation =  numberWithCommas(result.data.restCountries.population);
+                let area = numberWithCommas(result.data.restCountries.area);
+                let callingCode = result.data.restCountries.callingCodes[0];
+                let demonym =  result.data.restCountries.demonym;
+                let domain = result.data.restCountries.topLevelDomain[0];
+                let languages = "";
+                    if (result.data.restCountries.languages.length === 1) {
+                        languages = result.data.restCountries.languages[0].name;
+                    } else if (result.data.restCountries.languages.length ===2 ) {
+                        languages = result.data.restCountries.languages[0].name +" and " + result.data.restCountries.languages[1].name
+                    } else if (result.data.restCountries.languages.length === 3) {
+                        languages = result.data.restCountries.languages[0].name +" , " + result.data.restCountries.languages[1].name + " and " +  result.data.restCountries.languages[2].name
+                    } else { result.data.restCountries.languages.forEach(language => {
+                        languages += language.name + " ";
+                            }) 
+                        }
+                $('#wikiModalLabel').html(result.data.restCountries.name);
+                $('#txtPopulation').html(popoulation);
+                $('#txtCapital').html(capitalCityName);
+                $('#txtLanguages').html(languages);
+                $('#txtArea').html(area +'km<sup>2</sup>');
+                $('#txtIso2').html(result.data.border.properties.iso_a2);
+                $('#txtIso3').html(result.data.border.properties.iso_a3)
+                $('#txtCallingCode').html("+" + callingCode);
+                $('#txtDemonym').html(demonym);
+                $('#txtDomain').html(domain);
+                $('#txtWikiImg').html(`<img id='flag' src='${result.data.wikiCountryExcerpt.thumbnail.source}'><br>`);
+                $('#txtWiki').html('<br>Wikipedia: ' + result.data.wikiCountryExcerpt.extract_html +'<br>');
 
 
                 //news
@@ -313,13 +324,19 @@ $('#selCountry').on('change', function() {
                         iconSize: [50, 50],
                         popupAnchor: [0,-15]
                     });
-                    
+
                     unescoSite = result.data.unescoSites.records[i].fields.site;
                     unescoLat = result.data.unescoSites.records[i].fields.coordinates[0];
                     unescoLng = result.data.unescoSites.records[i].fields.coordinates[1];
+                    unescoThumbnail = result.data.unescoSites.records[i].fields.image_url.filename;
+                    unsescoDescription = result.data.unescoSites.records[i].fields.short_description;
                     
-                    unescoMarker = L.marker(new L.LatLng(unescoLat, unescoLng), ({icon: unescoIcon})).bindPopup(`<h3>${unescoSite}</h3><p>${result.data.unescoSites.records[i].fields.short_description}</p>`);
+                    unescoMarker = L.marker(new L.LatLng(unescoLat, unescoLng), ({icon: unescoIcon})).bindPopup(`<div id="unescoContainer"><h3>${unescoSite}</h3><img id="unescoThumbnail" src='https://whc.unesco.org/uploads/sites/${unescoThumbnail}'><p id="unescoDescription">${unsescoDescription}</p></div>`, {
+                        maxWidth : 500
+                    });
+
                     unescoLayerGroup.addLayer(unescoMarker);
+
             };
 
             //capital city cluster
