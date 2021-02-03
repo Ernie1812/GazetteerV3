@@ -33,18 +33,18 @@
         $countryCodeA3 = $border['properties']['iso_a3'];
     
     // get User IP info from ipstack.com
-    $url='http://api.ipstack.com/check?access_key=a0bc50db7a7bfab522a89f9b5241d2be';
-        $ch = curl_init();
+    // $url='http://api.ipstack.com/check?access_key=a0bc50db7a7bfab522a89f9b5241d2be';
+    // $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_URL,$url);
+    // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    // curl_setopt($ch, CURLOPT_URL,$url);
 
-        $result=curl_exec($ch);
+    // $result=curl_exec($ch);
 
-        curl_close($ch);
+    // curl_close($ch);
 
-        $UserIp = json_decode($result,true); 
+    // $UserIp = json_decode($result,true); 
 
     // RestCountries API Call for capital city and currrency info
     $url='https://restcountries.eu/rest/v2/alpha/'. $countryCodeA2;
@@ -112,7 +112,8 @@
     $covid = json_decode($result,true);
     
     //Currency Exchange Rates
-    $url='http://data.fixer.io/api/latest?access_key=54b8d05cf6bc98c297a61ffa4e922dd0';
+    //$url='http://data.fixer.io/api/latest?access_key=54b8d05cf6bc98c297a61ffa4e922dd0';
+    $url='https://openexchangerates.org/api/latest.json?app_id=2dc37900fadc4ebb9b021fd6eec9f53c';
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -295,7 +296,7 @@
     $output['status']['executedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
 
     
-    $output['data']['userIpInfo'] = $UserIp;
+    // $output['data']['userIpInfo'] = $UserIp;
     $output['data']['weather'] = $weather;
     $output['data']['covidData'] = $covid;
     $output['data']['exchangeRates'] = $exchangeRates;

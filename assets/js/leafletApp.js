@@ -265,7 +265,11 @@ $('#selCountry').on('change', function() {
                 $('#txtCurrencySymbol').html(currencySymbol);
                 $('#txtCurrency').html(currencyName);
                 $('#txtCurrencyCode').html(currencyCode);
-                $('#txtRate').html( exchangeRate.toFixed(2) + ' ' + currencyCode + ' to 1 EURO.');
+                if (exchangeRate != null) {
+                $('#txtRate').html( exchangeRate.toFixed(2) + ' ' + currencyCode + ' to 1 USD.');
+                } else {
+                    $('#txtRate').html( 'Exchange Rate Not Found');
+                };
 
                 //wiki country summary
                 let popoulation =  numberWithCommas(result.data.restCountries.population);
