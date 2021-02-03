@@ -19,6 +19,8 @@ let wikiCluster;
 //map
 mapboxgl.accessToken = 'pk.eyJ1IjoiZXN0cmFkYTExMDciLCJhIjoiY2p3cmkxaXE1MWs2ajRibGV4bjZna2cyZyJ9.rfXkxJ59K98sg9us_cOj3w';
 
+L.tileLayer('https://tile.jawg.io/jawg-streets/{z}/{x}/{y}.png?access-token=B5c7xyU8C9pYj2cSITJ1HHTfUeL6zaLCh8styLvSen0e5nBgU4p53kJ84IWOGAqZ', {})
+
 var jawgStreets = L.tileLayer('https://tile.jawg.io/jawg-streets/{z}/{x}/{y}.png?access-token=B5c7xyU8C9pYj2cSITJ1HHTfUeL6zaLCh8styLvSen0e5nBgU4p53kJ84IWOGAqZ', {
 	attribution: '<a href=\"https://www.jawg.io\" target=\"_blank\">&copy; Jawg</a> - <a href=\"https://www.openstreetmap.org\" target=\"_blank\">&copy; OpenStreetMap</a>&nbsp;contributors'}),
     hybrid = L.mapboxGL({
@@ -130,18 +132,51 @@ $(document).ready(function () {
                 }))
 
             //User's Location info to change select option
-            $.ajax({
-                url: "assets/php/ipStackApi.php",
-                type: 'GET',
-                dataType: 'json', 
-                    success: function (result) {
-                        currentCountry = result.data.userIpInfo.country_code;
-                        $("#selCountry").val(currentCountry).change();
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.log(textStatus, errorThrown);
-                    }
-            });
+            //User's Location info
+const successCallback = (position) => {
+    $.ajax({
+        url: "assets/php/openCage.php",
+        type: 'GET',
+        dataType: 'json',
+        data: {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+        },
+
+        success: function(result) {
+            
+            console.log('openCage User Location',result);
+            currentLat = result.data[0].geometry.lat;
+            currentLng = result.data[0].geometry.lng;
+
+            $("selectOpt select").val(result.data[0].components["ISO_3166-1_alpha-2"]);
+            
+            currentCountry = result.data[0].components["ISO_3166-1_alpha-2"];
+            $("#selCountry").val(currentCountry).change();
+        
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log(textStatus, errorThrown);
+        }
+    }); 
+    }
+
+    const errorCallback = (error) => {
+            console.error(error);
+}
+navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+            // $.ajax({
+            //     url: "assets/php/ipStackApi.php",
+            //     type: 'GET',
+            //     dataType: 'json', 
+            //         success: function (result) {
+            //             currentCountry = result.data.userIpInfo.country_code;
+            //             $("#selCountry").val(currentCountry).change();
+            //         },
+            //         error: function (jqXHR, textStatus, errorThrown) {
+            //             console.log(textStatus, errorThrown);
+            //         }
+            // });
         },    
     });
 //end document. ready
@@ -162,7 +197,6 @@ $('#selCountry').on('change', function() {
             $('#loading').show();
         },
         success: function(result) {
-            $('#loading').hide();
             console.clear();
             console.log('Call Results', result);
             
@@ -275,8 +309,8 @@ $('#selCountry').on('change', function() {
                 if ( result.data.BingNews[1].image) {
                     $('#overlay1').remove();
                     $('#imgArticleOneContainer').append(`<div id="overlay1" class="overlay-image" style="background-image: url(${result.data.BingNews[1].image.contentUrl});"></div>`);
-                } else {         
-                    $('#overlay1').remove();                                                                                           
+                }  else {         
+                    $('#overlay1').remove();
                     $('#imgArticleOneContainer').append(`<div id="overlay1" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
                 }
                 if ( result.data.BingNews[2].image) {
@@ -290,6 +324,7 @@ $('#selCountry').on('change', function() {
                     $('#overlay3').remove();
                     $('#imgArticleThreeContainer').append(`<div id="overlay3" class="overlay-image" style="background-image: url(${result.data.BingNews[3].image.contentUrl});"></div>`);
                 } else {
+                    $('#overlay3').remove();
                     $('#imgArticleThreeContainer').append(`<div id="overlay3" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
                 }
                 if ( result.data.BingNews[4].image) {
@@ -335,7 +370,7 @@ $('#selCountry').on('change', function() {
                     unsescoDescription = result.data.unescoSites.records[i].fields.short_description;
                     
                     unescoMarker = L.marker(new L.LatLng(unescoLat, unescoLng), ({icon: unescoIcon})).bindPopup(`<div id="unescoContainer"><h3>${unescoSite}</h3><img id="unescoThumbnail" src='https://whc.unesco.org/uploads/sites/${unescoThumbnail}'><p id="unescoDescription">${unsescoDescription}</p></div>`, {
-                        maxWidth : 500
+                        maxWidth : 300
                     });
 
                     unescoLayerGroup.addLayer(unescoMarker);
@@ -459,7 +494,6 @@ $('#selCountry').on('change', function() {
                                     cityThumbnailImg = city.thumbnailImg;
                                     cityUrl = city.wikipediaUrl;
                                     text = 'Read more';
-                                    console.log(city);
                                 };
 
                                 if (cityInfo === null) {
@@ -471,21 +505,16 @@ $('#selCountry').on('change', function() {
                                 };
                                 var cityIcon = L.icon({
                                     iconUrl: 'assets/img/icons/city.png',
-                                    iconSize: [50, 50],
+                                    iconSize: [30, 30],
                                     popupAnchor: [0,-15],
-                                    zIndexOffset: 999,
                                     className: 'cityIcon'
                                     });
-                                
 
-                                // var cityPopup = ;
                                 var cityOptions =
                                                 {
-                                                'maxWidth': '500',
+                                                'maxWidth': '300',
                                                 'className' : 'custom'
-                                                };
-                                
-                            
+                                                };        
                 
                                 var largeCityMarker = L.marker(new L.LatLng(cityLat, cityLng), ({icon: cityIcon})).bindPopup(`<div id="unescoContainer"><h3>${cityName}</h3><img id="unescoThumbnail" src='${cityThumbnailImg}' onerror="this.style.display='none'"><p id="unescoDescription">${cityInfo}</p><div id="city-link"><a href="//${cityUrl}">${text}</a></div></div>`, cityOptions);
                 
@@ -525,9 +554,7 @@ $('#selCountry').on('change', function() {
                         $('#loading').show();
                     },
                     success: function(result) {
-                        $('#loading').hide();
                         $('#wikiNearby').html("");
-                        console.log('wikiNearby Data',result);
                         
                         if (result.status.name == "ok") {
                             
@@ -542,7 +569,7 @@ $('#selCountry').on('change', function() {
                                     });
                                 var customOptions =
                                     {
-                                    'maxWidth': '500',
+                                    'maxWidth': '300',
                                     'className' : 'custom'
                                     }
 
@@ -553,25 +580,19 @@ $('#selCountry').on('change', function() {
                                 wikiUrl = result.wikiPlaces[i].wikipediaUrl;
                                 wikiThumbnail = result.wikiPlaces[i].thumbnailImg;
                                 
-                                
                                 var customPopup = `<div class="card" style="width: 18rem;"><div class="card-body"><h5 class="card-title">${wikiPlaceName}</h5><img class="img-thumbnail float-right" style="max-width: 100px" src="${wikiThumbnail}" onerror="this.style.display='none'"><p class="card-text" id="wiki-sum">${wikiSummary}</p><a href="//${wikiUrl}" class="card-link">Read more</a><a href="#" class="card-link"></a></div></div>`;
 
                                 wikiPlaceMarker = L.marker(new L.LatLng(wikiPlaceLat, wikiPlaceLng), ({icon: wikiPlaceIcon})).bindPopup(customPopup,customOptions);
 
                                 capCityCluster.addLayer(wikiPlaceMarker);
                                 };
-
                             }
-                    
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         console.log('WikiFindNearby Data Error', textStatus, errorThrown);
                     }
                         });
                     };
-
-            
-
         },
 
         error: function(jqXHR, textStatus, errorThrown) {

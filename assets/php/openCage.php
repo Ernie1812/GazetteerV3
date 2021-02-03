@@ -1,9 +1,10 @@
 <?php
 
 	$executionStartTime = microtime(true) / 1000;
-    $url='http://api.geonames.org/findNearbyWikipediaJSON?formatted=true&lat=' . $_REQUEST['lat'] . '&lng=' . $_REQUEST['lng'] . '&country='. $_REQUEST['country'] .'&maxRows=15&username=estrada1107&style=full';
-    
-    $ch = curl_init();
+    //$url= 'https://api.opencagedata.com/geocode/v1/json?q=LAT+LNG&key=d15534ffc3514c07817111eacd8ea75b';
+    $url = 'https://api.opencagedata.com/geocode/v1/json?q='. $_REQUEST['lat'] .'+' . $_REQUEST['lng'] . '&key=d15534ffc3514c07817111eacd8ea75b';
+
+	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_URL,$url);
@@ -18,7 +19,7 @@
 	$output['status']['name'] = "ok";
 	$output['status']['description'] = "mission saved";
 	$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-	$output['wikiPlaces'] = $decode['geonames'];
+	$output['data'] = $decode['results'];
 	
 	header('Content-Type: application/json; charset=UTF-8');
 
