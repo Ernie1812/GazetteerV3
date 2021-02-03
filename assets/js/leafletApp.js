@@ -265,10 +265,10 @@ $('#selCountry').on('change', function() {
                 $('#txtCurrencySymbol').html(currencySymbol);
                 $('#txtCurrency').html(currencyName);
                 $('#txtCurrencyCode').html(currencyCode);
-                if (exchangeRate != null) {
-                $('#txtRate').html( exchangeRate.toFixed(2) + ' ' + currencyCode + ' to 1 USD.');
-                } else {
+                if (isNaN(exchangeRate)) {
                     $('#txtRate').html( 'Exchange Rate Not Found');
+                } else {
+                    $('#txtRate').html( exchangeRate.toFixed(2) + ' ' + currencyCode + ' to 1 USD.');
                 };
 
                 //wiki country summary
