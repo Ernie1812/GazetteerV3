@@ -269,7 +269,7 @@ $('#selCountry').on('change', function() {
                 if (isNaN(exchangeRate)) {
                     $('#txtRate').html( 'Exchange Rate Not Found');
                 } else {
-                    $('#txtRate').html( exchangeRate.toFixed(2) + ' ' + currencyCode + ' to 1 USD.');
+                    $('#txtRate').html( exchangeRate.toFixed(2) + ' ' + currencyCode + ' to 1 EURO.');
                 };
 
                 //wiki country summary

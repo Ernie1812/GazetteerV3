@@ -67,7 +67,7 @@
         
     
     //PositionStack API Call for capital city long and lat
-    $url ='http://api.positionstack.com/v1/forward?access_key=03dd90a4064c55cbb186d659cbe3c5d3&query='. $capitalCity .','.$countryName;
+    $url ='http://api.positionstack.com/v1/forward?access_key=cc4a38f03554215037c505edf96abf81&query='. $capitalCity .','.$countryName;
     $ch = curl_init();
 
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -112,8 +112,8 @@
     $covid = json_decode($result,true);
     
     //Currency Exchange Rates
-    $url='http://data.fixer.io/api/latest?access_key=54b8d05cf6bc98c297a61ffa4e922dd0';
-    //$url='https://openexchangerates.org/api/latest.json?app_id=2dc37900fadc4ebb9b021fd6eec9f53c';
+    $url='http://data.fixer.io/api/latest?access_key=8bc8db0d02010c50047f53ccf9889388';
+    //$url='https://openexchangerates.org/api/latest.json?app_id=172dd560a2bd4ea38005129d6fae498d';
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -151,7 +151,7 @@
 	$wikiCountryExcerpt = json_decode($result,true);	
 
     //Bing News API
-    $accessKey = 'cd964ea99ef146a1973ce6f1540c84db';
+    $accessKey = '548e929165324c1a8299320a99b97056';
 
     $endpoint = 'https://api.bing.microsoft.com/v7.0/news/search';
 
@@ -163,7 +163,7 @@
                             'header' => $headers,
                             'method' => 'GET' ));
         $context = stream_context_create($options);
-        $result = file_get_contents($url . "?q=" . urlencode($query)."&originalImg=true&setLang=en&count=6", false, $context);
+        $result = file_get_contents($url . "?q=" . urlencode($query)."&originalImg=true&setLang=EN&count=6", false, $context);
         $headers = array();
         foreach ($http_response_header as $k => $v) {
             $h = explode(":", $v, 2);
@@ -192,7 +192,7 @@
     $unesco = json_decode($result,true);
 
     //capital city hospitals
-    $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=hospital&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=15&apiKey=JrMv7faeaOpGnJXd_VwW11pu8AoiIgEy_O29cZHOtMQ';
+    $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=hospital&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=15&apiKey=vUAsu-QX6rLWXv_WfJqiy4F94uhDCTj7aWfdLWMaiqM';
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -206,7 +206,7 @@
     $capCityHospitals = json_decode($result,true);
     
     //capital city airports
-    $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=airport&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=15&apiKey=JrMv7faeaOpGnJXd_VwW11pu8AoiIgEy_O29cZHOtMQ';
+    $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=airport&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=15&apiKey=vUAsu-QX6rLWXv_WfJqiy4F94uhDCTj7aWfdLWMaiqM';
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -220,7 +220,7 @@
     $capCityAirports = json_decode($result,true);
     
     //capital city hotels
-    $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=hotel&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=20&apiKey=JrMv7faeaOpGnJXd_VwW11pu8AoiIgEy_O29cZHOtMQ';
+    $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=hotel&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=20&apiKey=vUAsu-QX6rLWXv_WfJqiy4F94uhDCTj7aWfdLWMaiqM';
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -234,7 +234,7 @@
     $capCityHotels = json_decode($result,true);
     
     //capital city parks
-    $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=park&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=20&apiKey=JrMv7faeaOpGnJXd_VwW11pu8AoiIgEy_O29cZHOtMQ';
+    $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=park&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=20&apiKey=vUAsu-QX6rLWXv_WfJqiy4F94uhDCTj7aWfdLWMaiqM';
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -248,7 +248,7 @@
     $capCityParks = json_decode($result,true);
 
     //capital city parks
-    $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=restaurant&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=20&apiKey=JrMv7faeaOpGnJXd_VwW11pu8AoiIgEy_O29cZHOtMQ';
+    $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=restaurant&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=20&apiKey=vUAsu-QX6rLWXv_WfJqiy4F94uhDCTj7aWfdLWMaiqM';
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -262,7 +262,7 @@
     $capCityRestaurants= json_decode($result,true);
 
     //capital city museums
-    $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=museum&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=25&apiKey=JrMv7faeaOpGnJXd_VwW11pu8AoiIgEy_O29cZHOtMQ';
+    $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=museum&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=25&apiKey=vUAsu-QX6rLWXv_WfJqiy4F94uhDCTj7aWfdLWMaiqM';
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
