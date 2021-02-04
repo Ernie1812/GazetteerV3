@@ -112,8 +112,8 @@
     $covid = json_decode($result,true);
     
     //Currency Exchange Rates
-    //$url='http://data.fixer.io/api/latest?access_key=54b8d05cf6bc98c297a61ffa4e922dd0';
-    $url='https://openexchangerates.org/api/latest.json?app_id=2dc37900fadc4ebb9b021fd6eec9f53c';
+    $url='http://data.fixer.io/api/latest?access_key=54b8d05cf6bc98c297a61ffa4e922dd0';
+    //$url='https://openexchangerates.org/api/latest.json?app_id=2dc37900fadc4ebb9b021fd6eec9f53c';
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);

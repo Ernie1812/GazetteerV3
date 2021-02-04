@@ -14,6 +14,7 @@ let unescoNumber;
 
 let capCityCluster;
 let wikiCluster;
+let largeCityCluster;
 
 
 //map
@@ -464,8 +465,11 @@ $('#selCountry').on('change', function() {
             });
 
             //cities markers
-            let largeCityCluster = new L.layerGroup();
-
+            if (map.hasLayer(largeCityCluster)) {
+                map.removeLayer(largeCityCluster);
+            }
+            largeCityCluster = new L.layerGroup();
+            map.addLayer(largeCityCluster);
             result.data.largeCities.forEach(largeCity => {
                 let cityName = largeCity.fields.name;
                 let cityName2 = cityName.replaceAll(" ", "%20");
@@ -536,7 +540,7 @@ $('#selCountry').on('change', function() {
                 
             });
             
-            map.addLayer(largeCityCluster);
+            
 
             //Large Cities Clusters
             for (let i = 0; i < result.data.largeCities.length; i++) {
