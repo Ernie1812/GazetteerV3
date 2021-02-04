@@ -198,6 +198,7 @@ $('#selCountry').on('change', function() {
             $('#loading').show();
         },
         success: function(result) {
+            $('#loading').hide();
             console.clear();
             console.log('Call Results', result);
             
@@ -464,143 +465,95 @@ $('#selCountry').on('change', function() {
                 capCityCluster.addLayer(capCityMarker);
             });
 
-            //cities markers
+            //cities markers with wiki summary
             if (map.hasLayer(largeCityCluster)) {
                 map.removeLayer(largeCityCluster);
             }
             largeCityCluster = new L.layerGroup();
             map.addLayer(largeCityCluster);
+
             result.data.largeCities.forEach(largeCity => {
                 let cityName = largeCity.fields.name;
-                let cityName2 = cityName.replaceAll(" ", "%20");
-                let countryName2 = countryName.replaceAll(" ", "%20");
                 let cityLat =  largeCity.geometry.coordinates[1];
                 let cityLng =  largeCity.geometry.coordinates[0];
+                let cityInfo = null;
+                let cityThumbnailImg;
+                let cityUrl;
+                let text;
+                result.data.wikiCitiesTextData.forEach(city => {
+                    if (result.data.wikiCitiesTextData[0].geonames[0].countryCode === borderCountryCode && city.geonames[0].title === cityName) {
+                        cityInfo = city.geonames[0].summary;
+                        cityThumbnailImg = city.geonames[0].thumbnailImg;
+                        cityUrl = city.geonames[0].wikipediaUrl;
+                        text = 'Read more';
+                    };
 
-                // Wiki city info
-                $.ajax({
-                    url: "assets/php/wikiSearch.php",
-                    type: 'GET',
-                    dataType: 'json',
-                    data: {
-                        wikiCityName: cityName2,
-                        wikiCountryName: countryName2
-                    },
-                    beforeSend: function() {
-                        $('#loading').show();
-                    },
-                    success: function(result) {
-                        $('#loading').hide();
-                        if (result.status.name == "ok") {
-                            let cityInfo = null;
-                            let cityThumbnailImg;
-                            let cityUrl;
-                            let text;
-                            result.wikiCity.geonames.forEach(city => {
-                                if (city.countryCode === borderCountryCode && city.title === cityName) {
-                                    cityInfo = city.summary;
-                                    cityThumbnailImg = city.thumbnailImg;
-                                    cityUrl = city.wikipediaUrl;
-                                    text = 'Read more';
-                                };
-
-                                if (cityInfo === null) {
-                                    cityInfo = " ";
-                                    cityThumbnailImg = " ";
-                                    cityUrl = " ";
-                                    text = " "
-                                    
-                                };
-                                var cityIcon = L.icon({
-                                    iconUrl: 'assets/img/icons/city.png',
-                                    iconSize: [30, 30],
-                                    popupAnchor: [0,-15],
-                                    className: 'cityIcon'
-                                    });
-
-                                var cityOptions =
-                                                {
-                                                'maxWidth': '300',
-                                                'className' : 'custom'
-                                                };        
-                
-                                var largeCityMarker = L.marker(new L.LatLng(cityLat, cityLng), ({icon: cityIcon})).bindPopup(`<div id="unescoContainer"><h3>${cityName}</h3><img id="unescoThumbnail" src='${cityThumbnailImg}' onerror="this.style.display='none'"><p id="unescoDescription">${cityInfo}</p><div id="city-link"><a href="//${cityUrl}">${text}</a></div></div>`, cityOptions);
-                
-                                largeCityCluster.addLayer(largeCityMarker);
-                                
-                            });
+                    if (cityInfo === null) {
+                        cityInfo = " ";
+                        cityThumbnailImg = " ";
+                        cityUrl = " ";
+                        text = " "
                         
-                        }
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.log('Wiki City Error',textStatus, errorThrown);
-                    }
-                });
-                
-                
-            });
-            
-            
+                    };
+                    var cityIcon = L.icon({
+                        iconUrl: 'assets/img/icons/city.png',
+                        iconSize: [30, 30],
+                        popupAnchor: [0,-15],
+                        className: 'cityIcon'
+                        });
 
-            //Large Cities Clusters
-            for (let i = 0; i < result.data.largeCities.length; i++) {
-                cityName = result.data.largeCities[i].fields.name;
-                cityLat = result.data.largeCities[i].geometry.coordinates[1];
-                cityLng = result.data.largeCities[i].geometry.coordinates[0];
-                
-                //wiki Find Nearby Places for cities
-                $.ajax({
-                    url: "assets/php/wikiFindNearby.php",
-                    type: 'GET',
-                    dataType: 'json',
-                    data: {
-                        lat: cityLat,
-                        lng: cityLng,
-                        country: borderCountryCode
-                    },
-                    beforeSend: function() {
-                        $('#loading').show();
-                    },
-                    success: function(result) {
-                        $('#wikiNearby').html("");
-                        
-                        if (result.status.name == "ok") {
-                            
-                             wikiCluster = new L.markerClusterGroup();
-                            
-                            for (let i = 0; i < result.wikiPlaces.length; i++) {
-                                
-                                var wikiPlaceIcon = L.icon({
-                                    iconUrl: 'assets/img/icons/wikipedia.png',
-                                    iconSize: [50, 50], // size of the icon
-                                    popupAnchor: [0,-15]
-                                    });
-                                var customOptions =
+                    var cityOptions =
                                     {
                                     'maxWidth': '300',
                                     'className' : 'custom'
-                                    }
+                                    };        
+    
+                    var largeCityMarker = L.marker(new L.LatLng(cityLat, cityLng), ({icon: cityIcon})).bindPopup(`<div id="unescoContainer"><h3>${cityName}</h3><img id="unescoThumbnail" src='${cityThumbnailImg}' onerror="this.style.display='none'"><p id="unescoDescription">${cityInfo}</p><div id="city-link"><a href="//${cityUrl}">${text}</a></div></div>`, cityOptions);
+    
+                    largeCityCluster.addLayer(largeCityMarker);
+                    
+                });
 
-                                wikiPlaceName = result.wikiPlaces[i].title;
-                                wikiPlaceLat = result.wikiPlaces[i].lat;
-                                wikiPlaceLng = result.wikiPlaces[i].lng;
-                                wikiSummary = result.wikiPlaces[i].summary;
-                                wikiUrl = result.wikiPlaces[i].wikipediaUrl;
-                                wikiThumbnail = result.wikiPlaces[i].thumbnailImg;
-                                
-                                var customPopup = `<div class="card" style="width: 18rem;"><div class="card-body"><h5 class="card-title">${wikiPlaceName}</h5><img class="img-thumbnail float-right" style="max-width: 100px" src="${wikiThumbnail}" onerror="this.style.display='none'"><p class="card-text" id="wiki-sum">${wikiSummary}</p><a href="//${wikiUrl}" class="card-link">Read more</a><a href="#" class="card-link"></a></div></div>`;
+            });
+            
 
-                                wikiPlaceMarker = L.marker(new L.LatLng(wikiPlaceLat, wikiPlaceLng), ({icon: wikiPlaceIcon})).bindPopup(customPopup,customOptions);
+                //wiki Find Nearby Places for cities
+                $('#wikiNearby').html("");
 
-                                capCityCluster.addLayer(wikiPlaceMarker);
-                                };
-                            }
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.log('WikiFindNearby Data Error', textStatus, errorThrown);
-                    }
+                wikiCluster = new L.markerClusterGroup();
+                
+                for (let i = 0; i < result.data.wikiCitiesData.length; i++) {
+                    result.data.wikiCitiesData[i].forEach(city => {
+                        
+                    var wikiPlaceIcon = L.icon({
+                        iconUrl: 'assets/img/icons/wikipedia.png',
+                        iconSize: [50, 50], // size of the icon
+                        popupAnchor: [0,-15]
                         });
-                    };
+                    var customOptions =
+                        {
+                        'maxWidth': '300',
+                        'className' : 'custom'
+                        };
+
+                    wikiPlaceName = city.title;
+                    wikiPlaceLat = city.lat;
+                    wikiPlaceLng = city.lng;
+                    wikiSummary = city.summary;
+                    wikiUrl = city.wikipediaUrl;
+                    wikiThumbnail = city.thumbnailImg;
+                    
+                    var customPopup = `<div class="card" style="width: 18rem;"><div class="card-body"><h5 class="card-title">${wikiPlaceName}</h5><img class="img-thumbnail float-right" style="max-width: 100px" src="${wikiThumbnail}" onerror="this.style.display='none'"><p class="card-text" id="wiki-sum">${wikiSummary}</p><a href="//${wikiUrl}" class="card-link">Read more</a><a href="#" class="card-link"></a></div></div>`;
+
+                    wikiPlaceMarker = L.marker(new L.LatLng(wikiPlaceLat, wikiPlaceLng), ({icon: wikiPlaceIcon})).bindPopup(customPopup,customOptions);
+
+                    capCityCluster.addLayer(wikiPlaceMarker);
+
+
+                    });
+                    
+                };
+        
         },
 
         error: function(jqXHR, textStatus, errorThrown) {
