@@ -6,6 +6,7 @@
     $countryFullName = null;
     
     $countryName = null;
+    $countryNameNoSpace = null;
     $capitalLat = null;
     $capitalLng = null;
 
@@ -27,25 +28,12 @@
         }
         $output['data']['border'] = $border;
         $countryName = $border['properties']['name'];
+        $countryNameNoSpace = preg_replace('/\s+/', '%20', $countryName);
         $wikiCountryName = preg_replace('/\s+/', '_', $countryName);
         
         $countryCodeA2 = $border['properties']['iso_a2'];
         $countryCodeA3 = $border['properties']['iso_a3'];
     
-    // get User IP info from ipstack.com
-    // $url='http://api.ipstack.com/check?access_key=a0bc50db7a7bfab522a89f9b5241d2be';
-    // $ch = curl_init();
-
-    // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    // curl_setopt($ch, CURLOPT_URL,$url);
-
-    // $result=curl_exec($ch);
-
-    // curl_close($ch);
-
-    // $UserIp = json_decode($result,true); 
-
     // RestCountries API Call for capital city and currrency info
     $url='https://restcountries.eu/rest/v2/alpha/'. $countryCodeA2;
     
@@ -62,12 +50,13 @@
         $restCountries = json_decode($result,true); 
         $output['data']['restCountries'] = $restCountries;
         $countryFullName = $restCountries['name'];
-        $capitalCity = $restCountries['capital'];
+        $capitalCity = $restCountries['capital']; 
+        $capitalCityNoSpace =  preg_replace('/\s+/', '%20', $capitalCity);
         $currentCurrency = $restCountries['currencies'][0]['code'];
         
     
     //PositionStack API Call for capital city long and lat
-    $url ='http://api.positionstack.com/v1/forward?access_key=cc4a38f03554215037c505edf96abf81&query='. $capitalCity .','.$countryName;
+    $url ='http://api.positionstack.com/v1/forward?access_key=cc4a38f03554215037c505edf96abf81&query='. $capitalCityNoSpace .','.$countryNameNoSpace;
     $ch = curl_init();
 
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -220,18 +209,18 @@
     $capCityAirports = json_decode($result,true);
     
     //capital city hotels
-    $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=hotel&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=20&apiKey=vUAsu-QX6rLWXv_WfJqiy4F94uhDCTj7aWfdLWMaiqM';
+    // $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=hotel&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=20&apiKey=vUAsu-QX6rLWXv_WfJqiy4F94uhDCTj7aWfdLWMaiqM';
 
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_URL,$url);
+	// $ch = curl_init();
+	// curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	// curl_setopt($ch, CURLOPT_URL,$url);
 
-	$result=curl_exec($ch);
+	// $result=curl_exec($ch);
 
-	curl_close($ch);
+	// curl_close($ch);
 
-    $capCityHotels = json_decode($result,true);
+    // $capCityHotels = json_decode($result,true);
     
     //capital city parks
     $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=park&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=20&apiKey=vUAsu-QX6rLWXv_WfJqiy4F94uhDCTj7aWfdLWMaiqM';
@@ -247,19 +236,19 @@
 
     $capCityParks = json_decode($result,true);
 
-    //capital city parks
-    $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=restaurant&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=20&apiKey=vUAsu-QX6rLWXv_WfJqiy4F94uhDCTj7aWfdLWMaiqM';
+    //capital city Restaurants
+    // $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=restaurant&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=20&apiKey=vUAsu-QX6rLWXv_WfJqiy4F94uhDCTj7aWfdLWMaiqM';
 
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_URL,$url);
+	// $ch = curl_init();
+	// curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	// curl_setopt($ch, CURLOPT_URL,$url);
 
-	$result=curl_exec($ch);
+	// $result=curl_exec($ch);
 
-	curl_close($ch);
+	// curl_close($ch);
 
-    $capCityRestaurants= json_decode($result,true);
+    // $capCityRestaurants= json_decode($result,true);
 
     //capital city museums
     $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=museum&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=25&apiKey=vUAsu-QX6rLWXv_WfJqiy4F94uhDCTj7aWfdLWMaiqM';
@@ -347,9 +336,9 @@ foreach ($largeCities['records'] as $key => $value) {
     $output['data']['unescoSites'] = $unesco;
     $output['data']['capCityHospitals'] = $capCityHospitals;
     $output['data']['capCityAirports'] = $capCityAirports;
-    $output['data']['capCityHotels'] = $capCityHotels;
+    //$output['data']['capCityHotels'] = $capCityHotels;
     $output['data']['capCityParks'] = $capCityParks;
-    $output['data']['capCityRestaurants'] = $capCityRestaurants;
+    //$output['data']['capCityRestaurants'] = $capCityRestaurants;
     $output['data']['capCityMuseums'] = $capCityMuseums;
     $output['data']['wikiCitiesData'] = $wikiCitiesData;
     $output['data']['wikiCitiesTextData'] = $wikiCitiesTextData;
@@ -358,5 +347,4 @@ foreach ($largeCities['records'] as $key => $value) {
     header('Content-Type: application/json; charset=UTF-8');
 
     echo json_encode($output);
-
 ?>

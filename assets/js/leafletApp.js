@@ -221,7 +221,7 @@ $('#selCountry').on('change', function() {
 
             border.addTo(map); 
             
-            if (result.status.name == "ok") {
+           // if (result.status.name == "ok") {
                 
                 //set variables to reuse
                 countryName = result.data.border.properties.name;
@@ -305,58 +305,22 @@ $('#selCountry').on('change', function() {
 
 
                 //Bing News
-                if ( result.data.BingNews[0].image) {
-                    $('#overlay0').remove();
-                    $('#imgArticleZeroContainer').append(`<div id="overlay0" class="overlay-image" style="background-image: url(${result.data.BingNews[0].image.contentUrl});"></div>`);
-                } else {
-                    $('#overlay0').remove();
-                    $('#imgArticleZeroContainer').append(`<div id="overlay0" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
-                }
-                if ( result.data.BingNews[1].image) {
-                    $('#overlay1').remove();
-                    $('#imgArticleOneContainer').append(`<div id="overlay1" class="overlay-image" style="background-image: url(${result.data.BingNews[1].image.contentUrl});"></div>`);
-                }  else {         
-                    $('#overlay1').remove();
-                    $('#imgArticleOneContainer').append(`<div id="overlay1" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
-                }
-                if ( result.data.BingNews[2].image) {
-                    $('#overlay2').remove()
-                    $('#imgArticleTwoContainer').append(`<div id="overlay2" class="overlay-image" style="background-image: url(${result.data.BingNews[2].image.contentUrl});"></div>`);
-                } else {
-                    $('#overlay2').remove()
-                    $('#imgArticleTwoContainer').append(`<div id="overlay2" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
-                }
-                if ( result.data.BingNews[3].image) {
-                    $('#overlay3').remove();
-                    $('#imgArticleThreeContainer').append(`<div id="overlay3" class="overlay-image" style="background-image: url(${result.data.BingNews[3].image.contentUrl});"></div>`);
-                } else {
-                    $('#overlay3').remove();
-                    $('#imgArticleThreeContainer').append(`<div id="overlay3" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
-                }
-                if ( result.data.BingNews[4].image) {
-                    $('#overlay4').remove();
-                    $('#imgArticleFourContainer').append(`<div id="overlay4" class="overlay-image" style="background-image: url(${result.data.BingNews[4].image.contentUrl});"></div>`);
-                } else {
-                    $('#overlay4').remove();
-                    $('#imgArticleFourContainer').append(`<div id="overlay4" class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg);"></div>`);
+                if ( $('.carousel-inner').text().length != 0 ) {
+                    $('.carousel-inner').empty();
                 }
 
-                $('#txtArticleNameZero').text(result.data.BingNews[0].name);
-                $('#articleLinkZero').attr("href", result.data.BingNews[0].url);
+                if ( $('.carousel-inner').text().length == 0 ) {
+                    for (let i = 0; i < result.data.BingNews.length; i++) {
+                        if (result.data.BingNews[i].image) {
+                            $('.carousel-inner').append(`<div class="carousel-item"><div class="container"><div class="overlay-image" style="background-image: url(${result.data.BingNews[i].image.contentUrl});"></div><div class="carousel-caption text-start"><h5>${result.data.BingNews[i].name}</h5><p><a class="btn btn-lg btn-primary" href="${result.data.BingNews[i].url}" role="button">Read Article</a></p></div></div></div>`);
+                        }   
+                    else {
+                        $('.carousel-inner').append(`<div class="carousel-item"><div class="container"><div class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg});"></div><div class="carousel-caption text-start"><h5>${result.data.BingNews[i].name}</h5><p><a class="btn btn-lg btn-primary" href="${result.data.BingNews[i].url}" role="button">Read Article</a></p></div></div></div>`);
+                        }
+                    };
+                }
 
-                $('#txtArticleNameOne').text(result.data.BingNews[1].name);
-                $('#articleLinkOne').attr("href", result.data.BingNews[1].url);
-
-                $('#txtArticleNameTwo').text(result.data.BingNews[2].name);
-                $('#articleLinkTwo').attr("href", result.data.BingNews[2].url);    
-
-                $('#txtArticleNameThree').text(result.data.BingNews[3].name);
-                $('#articleLinkThree').attr("href", result.data.BingNews[3].url);
-
-                $('#txtArticleNameFour').text(result.data.BingNews[4].name);
-
-                $('#articleLinkFour').attr("href", result.data.BingNews[4].url);
-            }
+                $('.carousel-inner').find('.carousel-item:first' ).addClass( 'active' );
 
             //UNESCO Sites
             unescoNumber = result.data.unescoSites.nhits;
@@ -413,18 +377,18 @@ $('#selCountry').on('change', function() {
                 capCityCluster.addLayer(capCityMarker);
             });
             
-            result.data.capCityHotels.items.forEach(hotel => {
-                var hotelIcon = L.icon({
-                    iconUrl: 'assets/img/icons/hotel.png',
-                    iconSize: [50, 50],
-                    popupAnchor: [0,-15]
-                    });
-                hotelLabel = hotel.address.label;
-                hotelLat = hotel.position.lat;
-                hotelLng = hotel.position.lng;
-                var capCityMarker = L.marker(new L.LatLng(hotelLat, hotelLng), ({icon: hotelIcon})).bindPopup(hotelLabel);
-                capCityCluster.addLayer(capCityMarker);
-            });
+            // result.data.capCityHotels.items.forEach(hotel => {
+            //     var hotelIcon = L.icon({
+            //         iconUrl: 'assets/img/icons/hotel.png',
+            //         iconSize: [50, 50],
+            //         popupAnchor: [0,-15]
+            //         });
+            //     hotelLabel = hotel.address.label;
+            //     hotelLat = hotel.position.lat;
+            //     hotelLng = hotel.position.lng;
+            //     var capCityMarker = L.marker(new L.LatLng(hotelLat, hotelLng), ({icon: hotelIcon})).bindPopup(hotelLabel);
+            //     capCityCluster.addLayer(capCityMarker);
+            // });
 
             result.data.capCityParks.items.forEach(park => {
                 var parkIcon = L.icon({
@@ -439,18 +403,18 @@ $('#selCountry').on('change', function() {
                 capCityCluster.addLayer(capCityMarker);
             });
             
-            result.data.capCityRestaurants.items.forEach(restaurant => {
-                var restaurantIcon = L.icon({
-                    iconUrl: 'assets/img/icons/icons8-dining-room-48.png',
-                    iconSize: [50, 50],
-                    popupAnchor: [0,-15]
-                    });
-                restaurantLabel = restaurant.address.label;
-                restaurantLat = restaurant.position.lat;
-                restaurantLng = restaurant.position.lng;
-                var capCityMarker = L.marker(new L.LatLng(restaurantLat, restaurantLng), ({icon: restaurantIcon})).bindPopup(restaurantLabel);
-                capCityCluster.addLayer(capCityMarker);
-            });
+            // result.data.capCityRestaurants.items.forEach(restaurant => {
+            //     var restaurantIcon = L.icon({
+            //         iconUrl: 'assets/img/icons/icons8-dining-room-48.png',
+            //         iconSize: [50, 50],
+            //         popupAnchor: [0,-15]
+            //         });
+            //     restaurantLabel = restaurant.address.label;
+            //     restaurantLat = restaurant.position.lat;
+            //     restaurantLng = restaurant.position.lng;
+            //     var capCityMarker = L.marker(new L.LatLng(restaurantLat, restaurantLng), ({icon: restaurantIcon})).bindPopup(restaurantLabel);
+            //     capCityCluster.addLayer(capCityMarker);
+            // });
 
             result.data.capCityMuseums.items.forEach(museum => {
                 var museumIcon = L.icon({
@@ -512,9 +476,9 @@ $('#selCountry').on('change', function() {
     
                     largeCityCluster.addLayer(largeCityMarker);
                     
-                });
+                    });
 
-            });
+                });
             
 
                 //wiki Find Nearby Places for cities
@@ -553,6 +517,7 @@ $('#selCountry').on('change', function() {
                     });
                     
                 };
+           // }
         
         },
 
