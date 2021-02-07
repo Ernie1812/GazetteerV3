@@ -344,7 +344,7 @@ foreach ($largeCities['records'] as $key => $value) {
     $output['data']['wikiCitiesTextData'] = $wikiCitiesTextData;
     
 
-    header('Content-Type: application/json; charset=UTF-8');
+    //header('Content-Type: application/json; charset=UTF-8');
 
     echo json_encode($output);
 ?>
