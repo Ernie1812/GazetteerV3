@@ -181,7 +181,7 @@
     $unesco = json_decode($result,true);
 
     //capital city hospitals
-    $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=hospital&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=15&apiKey=vUAsu-QX6rLWXv_WfJqiy4F94uhDCTj7aWfdLWMaiqM';
+    $url='https://discover.search.hereapi.com/v1/discover?at='.$capitalLat.','.$capitalLng.'&q=hospital&lang=en-US&in=countryCode:'.$countryCodeA3.'&limit=10&apiKey=vUAsu-QX6rLWXv_WfJqiy4F94uhDCTj7aWfdLWMaiqM';
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -285,11 +285,11 @@ $wikiCitiesTextData = array();
 foreach ($largeCities['records'] as $key => $value) {
     $cityLat = $value['geometry']['coordinates'][1];
     $cityLng = $value['geometry']['coordinates'][0];
-    $countryCodeISO2 = $value['fields']['country_code'];
+    //$countryCodeISO2 = $value['fields']['country_code'];
     $cityName = preg_replace('/\s+/', '%20', $value['fields']['name']);
     
         //wiki city text info
-        $url='http://api.geonames.org/wikipediaSearchJSON?formatted=true&q=' .  $cityName .'&maxRows=50&username=estrada1107&style=full';
+        $url='http://api.geonames.org/wikipediaSearchJSON?formatted=true&q=' .  $cityName .'&maxRows=20&username=estrada1107&style=full';
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
