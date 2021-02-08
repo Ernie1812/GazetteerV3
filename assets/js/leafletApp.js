@@ -237,7 +237,7 @@ $('#selCountry').on('change', function() {
                 let covidDeaths = result.data.covidData.data.latest_data.deaths;
                 let covidConfirmed = result.data.covidData.data.latest_data.confirmed;
                 let covidcritical = result.data.covidData.data.latest_data.recovered;
-                    
+                let covidPerMil = result.data.covidData.data.latest_data.calculated.cases_per_million_population;
                 function numberWithCommas(x) {
                     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 }
@@ -246,6 +246,9 @@ $('#selCountry').on('change', function() {
                 $('#txtCovidDeaths').html(numberWithCommas(covidDeaths));
                 $('#txtCovidCases').html(numberWithCommas(covidConfirmed));
                 $('#txtCovidRecovered').html(numberWithCommas(covidcritical));
+                $('#txtCovidPerMillion').html(numberWithCommas(covidPerMil));
+                $('#txtCovidDeathRate').html( Math.round(result.data.covidData.data.latest_data.calculated.death_rate) +'&#37');
+                $('#txtCovidRecoveryRate').html( Math.round(result.data.covidData.data.latest_data.calculated.recovery_rate) +'&#37');
 
                 //currency info and exchange rate
                 let currencyCode = result.data.restCountries.currencies[0].code;
