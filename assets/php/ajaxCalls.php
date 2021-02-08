@@ -254,15 +254,31 @@ $largeCities = json_decode($result,true);
 $output['data']['largeCities'] = $largeCities['records'];
 
 $wikiCitiesData = array();
-$wikiCitiesTextData = array();
+    foreach ($largeCities['records'] as $key => $value) {
+        $cityLat = $value['geometry']['coordinates'][1];
+        $cityLng = $value['geometry']['coordinates'][0];
+        
+            //wiki cities long/lat marker data
+            $url='http://api.geonames.org/findNearbyWikipediaJSON?formatted=true&lat=' . $cityLat . '&lng=' . $cityLng . '&country='. $countryCodeA2 .'&maxRows=30&username=estrada1107&style=full';
 
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_URL,$url);
+
+            $result=curl_exec($ch);
+
+            curl_close($ch);
+            $cityData = json_decode($result,true);
+            $cityData2 = $cityData['geonames'];
+            array_push($wikiCitiesData, $cityData2);
+    }; 
+
+$wikiCitiesTextData = array();
 foreach ($largeCities['records'] as $key => $value) {
-    $cityLat = $value['geometry']['coordinates'][1];
-    $cityLng = $value['geometry']['coordinates'][0];
     $cityName = preg_replace('/\s+/', '%20', $value['fields']['name']);
-    
-        //wiki city text info
-        $url='http://api.geonames.org/wikipediaSearchJSON?formatted=true&q=' .  $cityName .'&maxRows=20&username=estrada1107&style=full';
+        //wiki city wiki text info
+        $url='http://api.geonames.org/wikipediaSearchJSON?formatted=true&q=' . $cityName .'&maxRows=20&username=estrada1107&style=full';
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -275,22 +291,8 @@ foreach ($largeCities['records'] as $key => $value) {
         $cityTxtData = json_decode($result,true);
         
         array_push($wikiCitiesTextData, $cityTxtData);
+}
 
-        //wiki cities marker data
-        $url='http://api.geonames.org/findNearbyWikipediaJSON?formatted=true&lat=' . $cityLat . '&lng=' . $cityLng . '&country='. $countryCodeA2 .'&maxRows=30&username=estrada1107&style=full';
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_URL,$url);
-
-        $result=curl_exec($ch);
-
-        curl_close($ch);
-        $cityData = json_decode($result,true);
-        $cityData2 = $cityData['geonames'];
-        array_push($wikiCitiesData, $cityData2);
-};
 
     //output status
     $output['status']['code'] = "200";

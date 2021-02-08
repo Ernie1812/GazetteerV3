@@ -421,19 +421,31 @@ $('#selCountry').on('change', function() {
                         text = " "
                         
                     };
-                    var cityIcon = L.icon({
-                        iconUrl: 'assets/img/icons/city.png',
-                        iconSize: [30, 30],
-                        popupAnchor: [0,-15],
-                        className: 'cityIcon'
-                        });
+                    
+
+                    var cityIcon;
 
                     var cityOptions =
                                     {
                                     'maxWidth': '300',
                                     'className' : 'custom'
                                     };        
-    
+                    
+                    if (cityName.trim() === capitalCityName.trim()) {
+                            cityIcon = L.icon({
+                            iconUrl: 'assets/img/icons/capital.png',
+                            iconSize: [35, 35],
+                            popupAnchor: [0,-15],
+                            className: 'cityIcon'
+                            });
+                    } else {
+                            cityIcon = L.icon({
+                            iconUrl: 'assets/img/icons/city.png',
+                            iconSize: [30, 30],
+                            popupAnchor: [0,-15],
+                            className: 'cityIcon'
+                            });
+                    }
                     var largeCityMarker = L.marker(new L.LatLng(cityLat, cityLng), ({icon: cityIcon})).bindPopup(`<div id="unescoContainer"><h3>${cityName}</h3><img id="unescoThumbnail" src='${cityThumbnailImg}' onerror="this.style.display='none'"><p id="unescoDescription">${cityInfo}</p><div id="city-link"><a href="//${cityUrl}">${text}</a></div></div>`, cityOptions);
     
                     largeCityCluster.addLayer(largeCityMarker);
