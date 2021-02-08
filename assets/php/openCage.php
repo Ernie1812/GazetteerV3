@@ -1,7 +1,6 @@
 <?php
 
 	$executionStartTime = microtime(true) / 1000;
-    //$url= 'https://api.opencagedata.com/geocode/v1/json?q=LAT+LNG&key=d15534ffc3514c07817111eacd8ea75b';
     $url = 'https://api.opencagedata.com/geocode/v1/json?q='. $_REQUEST['lat'] .'+' . $_REQUEST['lng'] . '&key=d15534ffc3514c07817111eacd8ea75b';
 
 	$ch = curl_init();

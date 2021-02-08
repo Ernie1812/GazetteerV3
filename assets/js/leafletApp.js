@@ -165,19 +165,8 @@ const successCallback = (position) => {
     const errorCallback = (error) => {
             console.error(error);
 }
-navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-            // $.ajax({
-            //     url: "assets/php/ipStackApi.php",
-            //     type: 'GET',
-            //     dataType: 'json', 
-            //         success: function (result) {
-            //             currentCountry = result.data.userIpInfo.country_code;
-            //             $("#selCountry").val(currentCountry).change();
-            //         },
-            //         error: function (jqXHR, textStatus, errorThrown) {
-            //             console.log(textStatus, errorThrown);
-            //         }
-            // });
+    navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+
         },    
     });
 //end document. ready
@@ -221,7 +210,7 @@ $('#selCountry').on('change', function() {
 
             border.addTo(map); 
             
-           // if (result.status.name == "ok") {
+            if (result.status.name == "ok") {
                 
                 //set variables to reuse
                 countryName = result.data.border.properties.name;
@@ -349,7 +338,7 @@ $('#selCountry').on('change', function() {
             
             //capital city cluster
             capCityCluster = L.markerClusterGroup();
-
+            //hospital markers
             result.data.capCityHospitals.items.forEach(hospital => {
                 var hospitalIcon = L.icon({
                     iconUrl: 'assets/img/icons/hospital.png',
@@ -363,7 +352,7 @@ $('#selCountry').on('change', function() {
                 var capCityMarker = L.marker(new L.LatLng(hospitalLat, hospitalLng), ({icon: hospitalIcon})).bindPopup(hospitalLabel);
                 capCityCluster.addLayer(capCityMarker);
             });
-            
+            //airport markers
             result.data.capCityAirports.items.forEach(airport => {
                 var airportIcon = L.icon({
                     iconUrl: 'assets/img/icons/airport.png',
@@ -376,20 +365,7 @@ $('#selCountry').on('change', function() {
                 var capCityMarker = L.marker(new L.LatLng(airportLat, airportLng), ({icon: airportIcon})).bindPopup(airportName);
                 capCityCluster.addLayer(capCityMarker);
             });
-            
-            // result.data.capCityHotels.items.forEach(hotel => {
-            //     var hotelIcon = L.icon({
-            //         iconUrl: 'assets/img/icons/hotel.png',
-            //         iconSize: [50, 50],
-            //         popupAnchor: [0,-15]
-            //         });
-            //     hotelLabel = hotel.address.label;
-            //     hotelLat = hotel.position.lat;
-            //     hotelLng = hotel.position.lng;
-            //     var capCityMarker = L.marker(new L.LatLng(hotelLat, hotelLng), ({icon: hotelIcon})).bindPopup(hotelLabel);
-            //     capCityCluster.addLayer(capCityMarker);
-            // });
-
+            //parks markers
             result.data.capCityParks.items.forEach(park => {
                 var parkIcon = L.icon({
                     iconUrl: 'assets/img/icons/park.png',
@@ -402,20 +378,7 @@ $('#selCountry').on('change', function() {
                 var capCityMarker = L.marker(new L.LatLng(parkLat, parkLng), ({icon: parkIcon})).bindPopup(parkLabel);
                 capCityCluster.addLayer(capCityMarker);
             });
-            
-            // result.data.capCityRestaurants.items.forEach(restaurant => {
-            //     var restaurantIcon = L.icon({
-            //         iconUrl: 'assets/img/icons/icons8-dining-room-48.png',
-            //         iconSize: [50, 50],
-            //         popupAnchor: [0,-15]
-            //         });
-            //     restaurantLabel = restaurant.address.label;
-            //     restaurantLat = restaurant.position.lat;
-            //     restaurantLng = restaurant.position.lng;
-            //     var capCityMarker = L.marker(new L.LatLng(restaurantLat, restaurantLng), ({icon: restaurantIcon})).bindPopup(restaurantLabel);
-            //     capCityCluster.addLayer(capCityMarker);
-            // });
-
+            //Museums markers
             result.data.capCityMuseums.items.forEach(museum => {
                 var museumIcon = L.icon({
                     iconUrl: 'assets/img/icons/museum.png',
@@ -517,7 +480,7 @@ $('#selCountry').on('change', function() {
                     });
                     
                 };
-           // }
+            }
         
         },
 
