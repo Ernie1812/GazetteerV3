@@ -188,8 +188,7 @@ $('#selCountry').on('change', function() {
         },
         success: function(result) {
             $('#loading').hide();
-            console.clear();
-            console.log('Call Results', result);
+            console.log(borderCountryCode, 'Results', result);
             
             //adds borders
             if (map.hasLayer(border)) {
@@ -297,14 +296,14 @@ $('#selCountry').on('change', function() {
                 if ( $('.carousel-inner').text().length != 0 ) {
                     $('.carousel-inner').empty();
                 }
-
+                
                 if ( $('.carousel-inner').text().length == 0 ) {
-                    for (let i = 0; i < result.data.BingNews.length; i++) {
-                        if (result.data.BingNews[i].image) {
-                            $('.carousel-inner').append(`<div class="carousel-item"><div class="container"><div class="overlay-image" style="background-image: url(${result.data.BingNews[i].image.contentUrl});"></div><div class="carousel-caption text-start"><h5>${result.data.BingNews[i].name}</h5><p><a class="btn btn-lg btn-primary" href="${result.data.BingNews[i].url}" role="button">Read Article</a></p></div></div></div>`);
+                    for (let i = 0; i < result.data.BingNews.value.length; i++) {
+                        if (result.data.BingNews.value[i].image) {
+                            $('.carousel-inner').append(`<div class="carousel-item"><div class="container"><div class="overlay-image" style="background-image: url(${result.data.BingNews.value[i].image.contentUrl});"></div><div class="carousel-caption text-start"><h5>${result.data.BingNews.value[i].name}</h5><p><a class="btn btn-lg btn-primary" href="${result.data.BingNews.value[i].url}" role="button">Read Article</a></p></div></div></div>`);
                         }   
                     else {
-                        $('.carousel-inner').append(`<div class="carousel-item"><div class="container"><div class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg});"></div><div class="carousel-caption text-start"><h5>${result.data.BingNews[i].name}</h5><p><a class="btn btn-lg btn-primary" href="${result.data.BingNews[i].url}" role="button">Read Article</a></p></div></div></div>`);
+                        $('.carousel-inner').append(`<div class="carousel-item"><div class="container"><div class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg});"></div><div class="carousel-caption text-start"><h5>${result.data.BingNews.value[i].name}</h5><p><a class="btn btn-lg btn-primary" href="${result.data.BingNews.value[i].url}" role="button">Read Article</a></p></div></div></div>`);
                         }
                     };
                 }
