@@ -271,11 +271,11 @@ $wikiCitiesData = array();
             curl_close($ch);
             
             $cityData = json_decode($result,true);
-            if ($cityData['geonames'] !== null) {
+            if ( is_null( $cityData['geonames']) ) {
+                continue;
+            } else if (isset($cityData['geonames'])){
                 $cityData2 = $cityData['geonames'];
                 array_push($wikiCitiesData, $cityData2);
-            } else {
-                continue;
             };
             
     }; 

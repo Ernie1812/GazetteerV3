@@ -222,7 +222,7 @@ $('#selCountry').on('change', function() {
                 //weather info
                 let weatherIcon = result.data.weather.current.weather[0].icon;
                 
-                $('#txtCapitalWeatherName').html(capitalCityName);
+                $('.txtCapitalWeatherName').html(capitalCityName);
                 $('#txtCapitalWeatherCurrent').html( Math.round(result.data.weather.current.temp) +'&#8451<br>');
                 $('#txtCapitalWeatherDescription').html( result.data.weather.current.weather[0].description);
                 $('#txtCapitalWeatherWindspeed').html(result.data.weather.current.wind_speed + ' km/h');
@@ -330,7 +330,7 @@ $('#selCountry').on('change', function() {
                 for (let i = 0; i < result.data.unescoSites.records.length; i++) {
 
                     unescoIcon = L.icon({
-                        iconUrl: 'assets/img/icons/unesco.png',
+                        iconUrl: 'assets/img/icons/unesco.svg',
                         iconSize: [50, 50],
                         popupAnchor: [0,-15]
                     });

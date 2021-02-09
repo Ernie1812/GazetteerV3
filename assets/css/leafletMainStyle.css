@@ -39,18 +39,6 @@ html, body, #map {
   z-index: 10001;
 }
 
-/* body { 
-  background-color: #67bfe7 !important; 
-}
-
-
-#map {
-  height: 100%;
-  width: 100%;
-  margin: 0 auto;
-  background-color: #67bfe7; 
-} 
-*/
 .leaflet-container {
   background-color:rgba(255,0,0,0.0);
 }
@@ -61,38 +49,35 @@ html, body, #map {
 .modal-body {
   height: 70vh;
   overflow-y: auto;
-  color: #000000;
+  /* color: #000000;
   border-color: white;
-  background-color: #5caed3;
+  background-color: #5caed3; */
 }
 
 .short-modal{
   height: auto;
 }
 
-.modal-header,
-.modal-footer {
-  background-color: #67bfe7;
-  border-color: lightslategray;
-  color: #000000;
-}
 
 table, th, tr {
   color: #000000;
 }
 
-.btn-close{
+/* .btn-close{
   background-color: #67bfe7;
 }
 
 .btn {
   background-color: #67bfe7;
-}
+} */
 
 .table {
   margin: 0 auto;
 }
 
+#weatherModal > div > div.modal-footer {
+  background-color: white;
+}
 /* UNESCO marker popup */
 #unescoContainer {
   max-height: 40vh;
