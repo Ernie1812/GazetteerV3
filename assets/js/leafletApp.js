@@ -20,22 +20,24 @@ let largeCityCluster;
 //map
 mapboxgl.accessToken = 'pk.eyJ1IjoiZXN0cmFkYTExMDciLCJhIjoiY2p3cmkxaXE1MWs2ajRibGV4bjZna2cyZyJ9.rfXkxJ59K98sg9us_cOj3w';
 
-L.tileLayer('https://tile.jawg.io/jawg-streets/{z}/{x}/{y}.png?access-token=B5c7xyU8C9pYj2cSITJ1HHTfUeL6zaLCh8styLvSen0e5nBgU4p53kJ84IWOGAqZ', {})
+// L.tileLayer('https://tile.jawg.io/jawg-streets/{z}/{x}/{y}.png?access-token=B5c7xyU8C9pYj2cSITJ1HHTfUeL6zaLCh8styLvSen0e5nBgU4p53kJ84IWOGAqZ', {})
 
-var jawgStreets = L.tileLayer('https://tile.jawg.io/jawg-streets/{z}/{x}/{y}.png?access-token=B5c7xyU8C9pYj2cSITJ1HHTfUeL6zaLCh8styLvSen0e5nBgU4p53kJ84IWOGAqZ', {
-	attribution: '<a href=\"https://www.jawg.io\" target=\"_blank\">&copy; Jawg</a> - <a href=\"https://www.openstreetmap.org\" target=\"_blank\">&copy; OpenStreetMap</a>&nbsp;contributors'}),
+var openStreetMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }),
     hybrid = L.mapboxGL({
     attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
     style: 'https://api.maptiler.com/maps/hybrid/style.json?key=IFRW9BnLg67kStosRQhA'});
 
 var map = L.map('map', {
     maxZoom: 18,
-    layers: [jawgStreets]
+    layers: [openStreetMap]
 }).fitWorld();
 
 var baseMaps = {
     "Satellite Map": hybrid,
-    "Streets Map": jawgStreets
+    "Streets Map": openStreetMap
 };
 
 L.control.layers(baseMaps).addTo(map);
@@ -61,53 +63,55 @@ L.easyButton('<i class="fas fa-virus"></i>', function(){
         $('#covidModal').modal('show');
 }, 'Covid-19 Information').addTo(map);
 
+
+
 //UNESCO Markers Toggle
-let unescoToggle = L.easyButton({
-    states: [{
-      stateName: 'add-markers',
-      icon: '<i class="fas fa-landmark"></i>',
-      title: 'UNESCO (Cultural) World Heritage Sites',
-      onClick: function(control) {
-        if(unescoNumber === 0) {
-            $('#unescoModal').modal('show');
-            $( '[title]="UNESCO World Heritage Sites"' ).removeClass( "remove-markers-active" ).addClass( "add-markers-active" );
-        };
-        map.addLayer(unescoLayerGroup);
-        control.state('remove-markers');
+// let unescoToggle = L.easyButton({
+//     states: [{
+//       stateName: 'add-markers',
+//       icon: '<i class="fas fa-landmark"></i>',
+//       title: 'UNESCO (Cultural) World Heritage Sites',
+//       onClick: function(control) {
+//         if(unescoNumber === 0) {
+//             $('#unescoModal').modal('show');
+//             $( '[title]="UNESCO World Heritage Sites"' ).removeClass( "remove-markers-active" ).addClass( "add-markers-active" );
+//         };
+//         map.addLayer(unescoLayerGroup);
+//         control.state('remove-markers');
         
-      }
-    }, {
-      icon: 'fa-undo',
-      stateName: 'remove-markers',
-      onClick: function(control) {
-        map.removeLayer(unescoLayerGroup);
-        control.state('add-markers');
-      },
-      title: 'Remove UNESCO Markers'
-    }]
-  }).addTo(map);
+//       }
+//     }, {
+//       icon: 'fa-undo',
+//       stateName: 'remove-markers',
+//       onClick: function(control) {
+//         map.removeLayer(unescoLayerGroup);
+//         control.state('add-markers');
+//       },
+//       title: 'Remove UNESCO Markers'
+//     }]
+//   }).addTo(map);
 
   //Capital City Cluster Easy Button Toggle
-let capCityToggle = L.easyButton({
-    states: [{
-      stateName: 'add-markers',
-      icon: '<i class="fas fa-city"></i>',
-      title: 'Places of Interest',
-      onClick: function(control) {
-        map.addLayer(capCityCluster);
-        control.state('remove-markers');
+// let capCityToggle = L.easyButton({
+//     states: [{
+//       stateName: 'add-markers',
+//       icon: '<i class="fas fa-city"></i>',
+//       title: 'Places of Interest',
+//       onClick: function(control) {
+//         map.addLayer(capCityCluster);
+//         control.state('remove-markers');
         
-      }
-    }, {
-      icon: 'fa-undo',
-      stateName: 'remove-markers',
-      onClick: function(control) {
-        map.removeLayer(capCityCluster);
-        control.state('add-markers');
-      },
-      title: 'Remove Places of Interest'
-    }]
-  }).addTo(map);
+//       }
+//     }, {
+//       icon: 'fa-undo',
+//       stateName: 'remove-markers',
+//       onClick: function(control) {
+//         map.removeLayer(capCityCluster);
+//         control.state('add-markers');
+//       },
+//       title: 'Remove Places of Interest'
+//     }]
+//   }).addTo(map);
 
 
 $(document).ready(function () { 
@@ -315,7 +319,14 @@ $('#selCountry').on('change', function() {
 
             //UNESCO Sites
             unescoNumber = result.data.unescoSites.nhits;
-            unescoLayerGroup = L.layerGroup();
+
+            if (map.hasLayer(unescoLayerGroup)) {
+                map.removeLayer(unescoLayerGroup);
+            }
+            unescoLayerGroup = new L.markerClusterGroup();
+            map.addLayer(unescoLayerGroup);
+
+            //unescoLayerGroup = L.layerGroup();
                 for (let i = 0; i < result.data.unescoSites.records.length; i++) {
 
                     unescoIcon = L.icon({
@@ -339,8 +350,13 @@ $('#selCountry').on('change', function() {
                 };
             
             //capital city cluster
-            capCityCluster = L.markerClusterGroup();
-            //hospital markers
+            if (map.hasLayer(capCityCluster)) {
+                map.removeLayer(capCityCluster);
+            }
+            capCityCluster = new L.markerClusterGroup();
+            map.addLayer(capCityCluster);
+
+            //capital hospital markers
             result.data.capCityHospitals.items.forEach(hospital => {
                 var hospitalIcon = L.icon({
                     iconUrl: 'assets/img/icons/hospital.png',
@@ -354,7 +370,7 @@ $('#selCountry').on('change', function() {
                 var capCityMarker = L.marker(new L.LatLng(hospitalLat, hospitalLng), ({icon: hospitalIcon})).bindPopup(hospitalLabel);
                 capCityCluster.addLayer(capCityMarker);
             });
-            //airport markers
+            //capital airport markers
             result.data.capCityAirports.items.forEach(airport => {
                 var airportIcon = L.icon({
                     iconUrl: 'assets/img/icons/airport.png',
@@ -367,7 +383,7 @@ $('#selCountry').on('change', function() {
                 var capCityMarker = L.marker(new L.LatLng(airportLat, airportLng), ({icon: airportIcon})).bindPopup(airportName);
                 capCityCluster.addLayer(capCityMarker);
             });
-            //parks markers
+            //capital parks markers
             result.data.capCityParks.items.forEach(park => {
                 var parkIcon = L.icon({
                     iconUrl: 'assets/img/icons/park.png',
@@ -380,7 +396,7 @@ $('#selCountry').on('change', function() {
                 var capCityMarker = L.marker(new L.LatLng(parkLat, parkLng), ({icon: parkIcon})).bindPopup(parkLabel);
                 capCityCluster.addLayer(capCityMarker);
             });
-            //Museums markers
+            //capital Museums markers
             result.data.capCityMuseums.items.forEach(museum => {
                 var museumIcon = L.icon({
                     iconUrl: 'assets/img/icons/museum.png',
@@ -436,15 +452,15 @@ $('#selCountry').on('change', function() {
                     
                     if (cityName.trim() === capitalCityName.trim()) {
                             cityIcon = L.icon({
-                            iconUrl: 'assets/img/icons/capital.png',
-                            iconSize: [35, 35],
+                            iconUrl: 'assets/img/icons/capital.svg',
+                            iconSize: [40, 40],
                             popupAnchor: [0,-15],
                             className: 'cityIcon'
                             });
                     } else {
                             cityIcon = L.icon({
-                            iconUrl: 'assets/img/icons/city.png',
-                            iconSize: [30, 30],
+                            iconUrl: 'assets/img/icons/cityscape.svg',
+                            iconSize: [40, 40],
                             popupAnchor: [0,-15],
                             className: 'cityIcon'
                             });

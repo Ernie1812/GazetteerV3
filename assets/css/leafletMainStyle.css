@@ -1,14 +1,23 @@
 /* GLOBAL STYLES
 -------------------------------------------------- */
 /* Padding below the footer and lighter body text */
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
 
 body {
   padding-top: 3rem;
-  padding-bottom: 3rem;
-  color: #5a5a5a;
+  color: black;
 }
 /* ----------------------------------------------- */
 
+html, body, #map {
+  height: 100%;
+  width: 100%;
+}
 .leaflet-bar { line-height:30px; };
 
 
@@ -30,18 +39,18 @@ body {
   z-index: 10001;
 }
 
-body { 
+/* body { 
   background-color: #67bfe7 !important; 
 }
 
 
 #map {
-  height: 85vh; 
-  width: 98vw; 
+  height: 100%;
+  width: 100%;
   margin: 0 auto;
-  background-color: #67bfe7;
-}
-
+  background-color: #67bfe7; 
+} 
+*/
 .leaflet-container {
   background-color:rgba(255,0,0,0.0);
 }

@@ -154,7 +154,7 @@
                             'header' => $headers,
                             'method' => 'GET' ));
         $context = stream_context_create($options);
-        $result = file_get_contents($url . "?q=" . urlencode($query)."&originalImg=true&setLang=EN&count=6", false, $context);
+        $result = file_get_contents($url . "?q=" . urlencode($query)."&originalImg=true&setLang=en-gb&mkt=en-GB&count=6", false, $context);
         $headers = array();
         foreach ($http_response_header as $k => $v) {
             $h = explode(":", $v, 2);
@@ -259,7 +259,7 @@ $wikiCitiesData = array();
         $cityLng = $value['geometry']['coordinates'][0];
         
             //wiki cities long/lat marker data
-            $url='http://api.geonames.org/findNearbyWikipediaJSON?formatted=true&lat=' . $cityLat . '&lng=' . $cityLng . '&country='. $countryCodeA2 .'&maxRows=30&username=estrada1107&style=full';
+            $url='http://api.geonames.org/findNearbyWikipediaJSON?formatted=true&lat=' . $cityLat . '&lng=' . $cityLng . '&country='. $countryCodeA2 .'&maxRows=25&username=flightltd&style=full';
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -269,9 +269,15 @@ $wikiCitiesData = array();
             $result=curl_exec($ch);
 
             curl_close($ch);
+            
             $cityData = json_decode($result,true);
-            $cityData2 = $cityData['geonames'];
-            array_push($wikiCitiesData, $cityData2);
+            if ($cityData['geonames'] !== null) {
+                $cityData2 = $cityData['geonames'];
+                array_push($wikiCitiesData, $cityData2);
+            } else {
+                continue;
+            };
+            
     }; 
 
 $wikiCitiesTextData = array();
