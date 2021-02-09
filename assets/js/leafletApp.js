@@ -425,8 +425,9 @@ $('#selCountry').on('change', function() {
                 let cityThumbnailImg;
                 let cityUrl;
                 let text;
+                
                 result.data.wikiCitiesTextData.forEach(city => {
-                    if (result.data.wikiCitiesTextData[0].geonames[0].countryCode === borderCountryCode && city.geonames[0].title === cityName) {
+                    if (result.data.wikiCitiesTextData[0].geonames[0].countryCode === borderCountryCode && city.geonames[0].title.toLowerCase() === cityName.toLowerCase()) {
                         cityInfo = city.geonames[0].summary;
                         cityThumbnailImg = city.geonames[0].thumbnailImg;
                         cityUrl = city.geonames[0].wikipediaUrl;
@@ -475,41 +476,41 @@ $('#selCountry').on('change', function() {
             
 
                 //wiki Find Nearby Places for cities
-                $('#wikiNearby').html("");
-
                 wikiCluster = new L.markerClusterGroup();
                 
-                for (let i = 0; i < result.data.wikiCitiesData.length; i++) {
-                    result.data.wikiCitiesData[i].forEach(city => {
-                        
-                    var wikiPlaceIcon = L.icon({
-                        iconUrl: 'assets/img/icons/wikipedia.png',
-                        iconSize: [50, 50], // size of the icon
-                        popupAnchor: [0,-15]
-                        });
-                    var customOptions =
-                        {
-                        'maxWidth': '300',
-                        'className' : 'custom'
-                        };
-
-                    wikiPlaceName = city.title;
-                    wikiPlaceLat = city.lat;
-                    wikiPlaceLng = city.lng;
-                    wikiSummary = city.summary;
-                    wikiUrl = city.wikipediaUrl;
-                    wikiThumbnail = city.thumbnailImg;
+                result.data.wikiCitiesData.forEach(city => {
                     
-                    var customPopup = `<div class="card" style="width: 18rem;"><div class="card-body"><h5 class="card-title">${wikiPlaceName}</h5><img class="img-thumbnail float-right" style="max-width: 100px" src="${wikiThumbnail}" onerror="this.style.display='none'"><p class="card-text" id="wiki-sum">${wikiSummary}</p><a href="//${wikiUrl}" class="card-link">Read more</a><a href="#" class="card-link"></a></div></div>`;
+                    Array.from(city.geonames).forEach(place => {
+                        
+                        var wikiPlaceIcon = L.icon({
+                            iconUrl: 'assets/img/icons/wikipedia.png',
+                            iconSize: [50, 50], // size of the icon
+                            popupAnchor: [0,-15]
+                            });
+                        var customOptions =
+                            {
+                            'maxWidth': '300',
+                            'className' : 'custom'
+                            };
 
-                    wikiPlaceMarker = L.marker(new L.LatLng(wikiPlaceLat, wikiPlaceLng), ({icon: wikiPlaceIcon})).bindPopup(customPopup,customOptions);
+                        wikiPlaceName = place.title;
+                        wikiPlaceLat = place.lat;
+                        wikiPlaceLng = place.lng;
+                        wikiSummary = place.summary;
+                        wikiUrl = place.wikipediaUrl;
+                        wikiThumbnail = place.thumbnailImg;
+                        
+                        var customPopup = `<div class="card" style="width: 18rem;"><div class="card-body"><h5 class="card-title">${wikiPlaceName}</h5><img class="img-thumbnail float-right" style="max-width: 100px" src="${wikiThumbnail}" onerror="this.style.display='none'"><p class="card-text" id="wiki-sum">${wikiSummary}</p><a href="//${wikiUrl}" class="card-link">Read more</a><a href="#" class="card-link"></a></div></div>`;
 
-                    capCityCluster.addLayer(wikiPlaceMarker);
+                        wikiPlaceMarker = L.marker(new L.LatLng(wikiPlaceLat, wikiPlaceLng), ({icon: wikiPlaceIcon})).bindPopup(customPopup,customOptions);
 
+                        capCityCluster.addLayer(wikiPlaceMarker);
 
                     });
                     
-                };
+                
+                    
+                });
             }
         
         },
