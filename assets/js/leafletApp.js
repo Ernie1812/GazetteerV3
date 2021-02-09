@@ -340,8 +340,9 @@ $('#selCountry').on('change', function() {
                     unescoLng = result.data.unescoSites.records[i].fields.coordinates[1];
                     unescoThumbnail = result.data.unescoSites.records[i].fields.image_url.filename;
                     unsescoDescription = result.data.unescoSites.records[i].fields.short_description;
+                    unescoUrl = result.data.unescoSites.records[i].fields.http_url;
                     
-                    unescoMarker = L.marker(new L.LatLng(unescoLat, unescoLng), ({icon: unescoIcon})).bindPopup(`<div id="unescoContainer"><h3>${unescoSite}</h3><img id="unescoThumbnail" src='https://whc.unesco.org/uploads/sites/${unescoThumbnail}'><p id="unescoDescription">${unsescoDescription}</p></div>`, {
+                    unescoMarker = L.marker(new L.LatLng(unescoLat, unescoLng), ({icon: unescoIcon})).bindPopup(`<div class="markerContainer"><h3>${unescoSite}</h3><img class="markerThumbnail" src='https://whc.unesco.org/uploads/sites/${unescoThumbnail}'><p class="markerTxtDescription">${unsescoDescription}</p></div><div id="city-link"><a href="${unescoUrl}">Learn more</a></div>`, {
                         maxWidth : 300
                     });
 
@@ -427,18 +428,18 @@ $('#selCountry').on('change', function() {
                 let text;
                 
                 result.data.wikiCitiesTextData.forEach(city => {
-                    if (result.data.wikiCitiesTextData[0].geonames[0].countryCode === borderCountryCode && city.geonames[0].title.toLowerCase() === cityName.toLowerCase()) {
+                    if (result.data.wikiCitiesTextData[0].geonames[0].countryCode === borderCountryCode && city.geonames[0].title.includes(cityName)) {
                         cityInfo = city.geonames[0].summary;
                         cityThumbnailImg = city.geonames[0].thumbnailImg;
                         cityUrl = city.geonames[0].wikipediaUrl;
-                        text = 'Read more';
+                        cityText = 'Read more';
                     };
 
                     if (cityInfo === null) {
                         cityInfo = " ";
                         cityThumbnailImg = " ";
                         cityUrl = " ";
-                        text = " "
+                        cityText = " "
                         
                     };
                     
@@ -466,7 +467,7 @@ $('#selCountry').on('change', function() {
                             className: 'cityIcon'
                             });
                     }
-                    var largeCityMarker = L.marker(new L.LatLng(cityLat, cityLng), ({icon: cityIcon})).bindPopup(`<div id="unescoContainer"><h3>${cityName}</h3><img id="unescoThumbnail" src='${cityThumbnailImg}' onerror="this.style.display='none'"><p id="unescoDescription">${cityInfo}</p><div id="city-link"><a href="//${cityUrl}">${text}</a></div></div>`, cityOptions);
+                    var largeCityMarker = L.marker(new L.LatLng(cityLat, cityLng), ({icon: cityIcon})).bindPopup(`<div class="markerContainer"><h3>${cityName}</h3><img class="markerThumbnail" src='${cityThumbnailImg}' onerror="this.style.display='none'"><p class="markerTxtDescription">${cityInfo}</p><div id="city-link"><a href="//${cityUrl}">${cityText}</a></div></div>`, cityOptions);
     
                     largeCityCluster.addLayer(largeCityMarker);
                     

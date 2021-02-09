@@ -238,22 +238,22 @@
 
     $capCityMuseums = json_decode($result,true);
 
-//large cities in country
-$url='https://public.opendatasoft.com/api/records/1.0/search/?dataset=geonames-all-cities-with-a-population-1000&q=&rows=10&sort=population&facet=timezone&facet=country&refine.country_code='. $countryCodeA2;
+    //large cities in country
+    $url='https://public.opendatasoft.com/api/records/1.0/search/?dataset=geonames-all-cities-with-a-population-1000&q=&rows=10&sort=population&facet=timezone&facet=country&refine.country_code='. $countryCodeA2;
 
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_URL,$url);
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_URL,$url);
 
-$result=curl_exec($ch);
+    $result=curl_exec($ch);
 
-curl_close($ch);
+    curl_close($ch);
 
-$largeCities = json_decode($result,true);
-$output['data']['largeCities'] = $largeCities['records'];
+    $largeCities = json_decode($result,true);
+    $output['data']['largeCities'] = $largeCities['records'];
 
-$wikiCitiesData = array();
+    $wikiCitiesData = array();
 
 
 // foreach ($largeCities['records'] as $key => $value) {
@@ -313,7 +313,7 @@ $wikiCitiesTextData = array();
 foreach ($largeCities['records'] as $key => $value) {
     $cityName = preg_replace('/\s+/', '%20', $value['fields']['name']);
         //wiki city wiki text info
-        $url='http://api.geonames.org/wikipediaSearchJSON?formatted=true&q=' . $cityName .'&maxRows=20&username=estrada1107&style=full';
+        $url='http://api.geonames.org/wikipediaSearchJSON?formatted=true&q=' . $cityName .'&maxRows=10&username=estrada1107&style=full';
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
