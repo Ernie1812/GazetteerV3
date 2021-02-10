@@ -478,11 +478,9 @@ $('#selCountry').on('change', function() {
 
                 //wiki Find Nearby Places for cities
                 wikiCluster = new L.markerClusterGroup();
-                
-                result.data.wikiCitiesData.forEach(city => {
-                    
-                    Array.from(city.geonames).forEach(place => {
-                        
+                for (let i = 0; i < result.data.wikiCitiesData.length; i++) {
+                    if (result.data.wikiCitiesData[i].geonames) {
+                       for (let j = 0; j < result.data.wikiCitiesData[i].geonames.length; j++) {
                         var wikiPlaceIcon = L.icon({
                             iconUrl: 'assets/img/icons/wikipedia.png',
                             iconSize: [50, 50], // size of the icon
@@ -494,24 +492,27 @@ $('#selCountry').on('change', function() {
                             'className' : 'custom'
                             };
 
-                        wikiPlaceName = place.title;
-                        wikiPlaceLat = place.lat;
-                        wikiPlaceLng = place.lng;
-                        wikiSummary = place.summary;
-                        wikiUrl = place.wikipediaUrl;
-                        wikiThumbnail = place.thumbnailImg;
+                        wikiPlaceName = result.data.wikiCitiesData[i].geonames[j].title;
+                        wikiPlaceLat = result.data.wikiCitiesData[i].geonames[j].lat;
+                        wikiPlaceLng = result.data.wikiCitiesData[i].geonames[j].lng;
+                        wikiSummary = result.data.wikiCitiesData[i].geonames[j].summary;
+                        wikiUrl = result.data.wikiCitiesData[i].geonames[j].wikipediaUrl;
+                        wikiThumbnail = result.data.wikiCitiesData[i].geonames[j].thumbnailImg;
                         
                         var customPopup = `<div class="card" style="width: 18rem;"><div class="card-body"><h5 class="card-title">${wikiPlaceName}</h5><img class="img-thumbnail float-right" style="max-width: 100px" src="${wikiThumbnail}" onerror="this.style.display='none'"><p class="card-text" id="wiki-sum">${wikiSummary}</p><a href="//${wikiUrl}" class="card-link">Read more</a><a href="#" class="card-link"></a></div></div>`;
 
                         wikiPlaceMarker = L.marker(new L.LatLng(wikiPlaceLat, wikiPlaceLng), ({icon: wikiPlaceIcon})).bindPopup(customPopup,customOptions);
 
-                        capCityCluster.addLayer(wikiPlaceMarker);
-
-                    });
+                        capCityCluster.addLayer(wikiPlaceMarker);  
+                        
+                    }
+                } else {
+                    continue;
+                }
                     
+                    
+                }
                 
-                    
-                });
             }
         
         },
