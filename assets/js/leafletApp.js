@@ -270,7 +270,15 @@ $('#selCountry').on('change', function() {
 
                 //wiki country summary
                 let popoulation =  numberWithCommas(result.data.restCountries.population);
-                let area = numberWithCommas(result.data.restCountries.area);
+                let area;
+                if (result.data.restCountries.area === null) {
+                    area = 'Area Data Unavailable'
+                    $('#txtArea').html(area);
+                } else {
+                    area = numberWithCommas(result.data.restCountries.area);
+                    $('#txtArea').html(area +'km<sup>2</sup>');
+                }
+                
                 let callingCode = result.data.restCountries.callingCodes[0];
                 let demonym =  result.data.restCountries.demonym;
                 let domain = result.data.restCountries.topLevelDomain[0];
@@ -289,7 +297,7 @@ $('#selCountry').on('change', function() {
                 $('#txtPopulation').html(popoulation);
                 $('#txtCapital').html(capitalCityName);
                 $('#txtLanguages').html(languages);
-                $('#txtArea').html(area +'km<sup>2</sup>');
+                
                 $('#txtIso2').html(result.data.border.properties.iso_a2);
                 $('#txtIso3').html(result.data.border.properties.iso_a3)
                 $('#txtCallingCode').html("+" + callingCode);
