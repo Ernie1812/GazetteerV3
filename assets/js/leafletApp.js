@@ -436,20 +436,24 @@ $('#selCountry').on('change', function() {
                 let text;
                 
                 result.data.wikiCitiesTextData.forEach(city => {
-                    if (result.data.wikiCitiesTextData[0].geonames[0].countryCode === borderCountryCode && city.geonames[0].title.includes(cityName)) {
-                        cityInfo = city.geonames[0].summary;
-                        cityThumbnailImg = city.geonames[0].thumbnailImg;
-                        cityUrl = city.geonames[0].wikipediaUrl;
-                        cityText = 'Read more';
-                    };
+                    if (city.geonames.length !== 0) {
+                        if (result.data.wikiCitiesTextData[0].geonames[0].countryCode === borderCountryCode && city.geonames[0].title.includes(cityName)) {
+                            cityInfo = city.geonames[0].summary;
+                            cityThumbnailImg = city.geonames[0].thumbnailImg;
+                            cityUrl = city.geonames[0].wikipediaUrl;
+                            cityText = 'Read more';
+                        };
 
-                    if (cityInfo === null) {
-                        cityInfo = " ";
-                        cityThumbnailImg = " ";
-                        cityUrl = " ";
-                        cityText = " "
-                        
-                    };
+                        if (cityInfo === null) {
+                            cityInfo = " ";
+                            cityThumbnailImg = " ";
+                            cityUrl = " ";
+                            cityText = " "
+                            
+                        };
+
+                    }
+                    
                     
 
                     var cityIcon;
