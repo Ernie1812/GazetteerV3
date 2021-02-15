@@ -315,10 +315,10 @@ $('#selCountry').on('change', function() {
                 if ( $('.carousel-inner').text().length == 0 ) {
                     for (let i = 0; i < result.data.BingNews.value.length; i++) {
                         if (result.data.BingNews.value[i].image) {
-                            $('.carousel-inner').append(`<div class="carousel-item"><div class="container"><div class="overlay-image" style="background-image: url(${result.data.BingNews.value[i].image.contentUrl});"></div><div class="carousel-caption text-start"><h5>${result.data.BingNews.value[i].name}</h5><p><a class="btn btn-lg btn-primary" href="${result.data.BingNews.value[i].url}" role="button">Read Article</a></p></div></div></div>`);
+                            $('.carousel-inner').append(`<div class="carousel-item"><div class="container"><div class="overlay-image" style="background-image: url(${result.data.BingNews.value[i].image.contentUrl});"></div><div class="carousel-caption text-start"><h5>${result.data.BingNews.value[i].name}</h5><p><a class="btn btn-lg btn-primary" href="${result.data.BingNews.value[i].url}" target="_blank" role="button">Read Article</a></p></div></div></div>`);
                         }   
                     else {
-                        $('.carousel-inner').append(`<div class="carousel-item"><div class="container"><div class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg});"></div><div class="carousel-caption text-start"><h5>${result.data.BingNews.value[i].name}</h5><p><a class="btn btn-lg btn-primary" href="${result.data.BingNews.value[i].url}" role="button">Read Article</a></p></div></div></div>`);
+                        $('.carousel-inner').append(`<div class="carousel-item"><div class="container"><div class="overlay-image" style="background-image: url(assets/img/image-not-available.jpg});"></div><div class="carousel-caption text-start"><h5>${result.data.BingNews.value[i].name}</h5><p><a class="btn btn-lg btn-primary" href="${result.data.BingNews.value[i].url}" target="_blank" role="button">Read Article</a></p></div></div></div>`);
                         }
                     };
                 }
@@ -350,7 +350,7 @@ $('#selCountry').on('change', function() {
                     unsescoDescription = result.data.unescoSites.records[i].fields.short_description;
                     unescoUrl = result.data.unescoSites.records[i].fields.http_url;
                     
-                    unescoMarker = L.marker(new L.LatLng(unescoLat, unescoLng), ({icon: unescoIcon})).bindPopup(`<div class="markerContainer"><h3>${unescoSite}</h3><img class="markerThumbnail" src='https://whc.unesco.org/uploads/sites/${unescoThumbnail}'><p class="markerTxtDescription">${unsescoDescription}</p></div><div id="city-link"><a href="${unescoUrl}">Learn more</a></div>`, {
+                    unescoMarker = L.marker(new L.LatLng(unescoLat, unescoLng), ({icon: unescoIcon})).bindPopup(`<div class="markerContainer"><h3>${unescoSite}</h3><img class="markerThumbnail" src='https://whc.unesco.org/uploads/sites/${unescoThumbnail}'><p class="markerTxtDescription">${unsescoDescription}</p></div><div id="city-link"><a href="${unescoUrl}" target="_blank">Learn more</a></div>`, {
                         maxWidth : 300
                     });
 
@@ -479,7 +479,7 @@ $('#selCountry').on('change', function() {
                             className: 'cityIcon'
                             });
                     }
-                    var largeCityMarker = L.marker(new L.LatLng(cityLat, cityLng), ({icon: cityIcon})).bindPopup(`<div class="markerContainer"><h3>${cityName}</h3><img class="markerThumbnail" src='${cityThumbnailImg}' onerror="this.style.display='none'"><p class="markerTxtDescription">${cityInfo}</p><div id="city-link"><a href="//${cityUrl}">${cityText}</a></div></div>`, cityOptions);
+                    var largeCityMarker = L.marker(new L.LatLng(cityLat, cityLng), ({icon: cityIcon})).bindPopup(`<div class="markerContainer"><h3>${cityName}</h3><img class="markerThumbnail" src='${cityThumbnailImg}' onerror="this.style.display='none'"><p class="markerTxtDescription">${cityInfo}</p><div id="city-link"><a href="//${cityUrl}" target="_blank">${cityText}</a></div></div>`, cityOptions);
     
                     largeCityCluster.addLayer(largeCityMarker);
                     
@@ -511,7 +511,7 @@ $('#selCountry').on('change', function() {
                         wikiUrl = result.data.wikiCitiesData[i].geonames[j].wikipediaUrl;
                         wikiThumbnail = result.data.wikiCitiesData[i].geonames[j].thumbnailImg;
                         
-                        var customPopup = `<div class="card" style="width: 18rem;"><div class="card-body"><h5 class="card-title">${wikiPlaceName}</h5><img class="img-thumbnail float-right" style="max-width: 100px" src="${wikiThumbnail}" onerror="this.style.display='none'"><p class="card-text" id="wiki-sum">${wikiSummary}</p><a href="//${wikiUrl}" class="card-link">Read more</a><a href="#" class="card-link"></a></div></div>`;
+                        var customPopup = `<div class="card" style="width: 18rem;"><div class="card-body"><h5 class="card-title">${wikiPlaceName}</h5><img class="img-thumbnail float-right" style="max-width: 100px" src="${wikiThumbnail}" onerror="this.style.display='none'"><p class="card-text" id="wiki-sum">${wikiSummary}</p><a href="//${wikiUrl}" target="_blank"class="card-link">Read more</a><a href="#" class="card-link"></a></div></div>`;
 
                         wikiPlaceMarker = L.marker(new L.LatLng(wikiPlaceLat, wikiPlaceLng), ({icon: wikiPlaceIcon})).bindPopup(customPopup,customOptions);
 
