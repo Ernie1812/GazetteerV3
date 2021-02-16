@@ -243,7 +243,7 @@
     $capCityMuseums = json_decode($result,true);
 
     //large cities in country
-    $url='https://public.opendatasoft.com/api/records/1.0/search/?dataset=geonames-all-cities-with-a-population-1000&q=&rows=10&sort=population&facet=timezone&facet=country&refine.country_code='. $countryCodeA2;
+    $url='https://public.opendatasoft.com/api/records/1.0/search/?dataset=geonames-all-cities-with-a-population-1000&q=&rows=8&sort=population&facet=timezone&facet=country&refine.country_code='. $countryCodeA2;
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -260,29 +260,6 @@
     $wikiCitiesData = array();
 
 
-// foreach ($largeCities['records'] as $key => $value) {
-//     $cityLat = $value['geometry']['coordinates'][1];
-//     $cityLng = $value['geometry']['coordinates'][0];
-
-//         $url='https://en.wikipedia.org/w/api.php?action=query&format=json&prop=coordinates%7Cpageimages&generator=geosearch&coprop=&ggscoord=' . $cityLat . '%7C' . $cityLng;
-
-//         $ch = curl_init();
-//         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-//         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//         curl_setopt($ch, CURLOPT_URL,$url);
-
-//         $result=curl_exec($ch);
-
-//         curl_close($ch);
-        
-//         $cityData = json_decode($result,true);
-//         $cityData2 = $cityData;
-//         array_push($wikiCitiesData, $cityData2);
-        
-
-// }
-
-
     foreach ($largeCities['records'] as $key => $value) {
         $cityLat = $value['geometry']['coordinates'][1];
         $cityLng = $value['geometry']['coordinates'][0];
@@ -291,7 +268,7 @@
                 continue;
             } elseif (isset($cityLat) && isset($cityLng)) {
                 //wiki cities long/lat marker data
-            $url='http://api.geonames.org/findNearbyWikipediaJSON?formatted=true&lat=' . $cityLat . '&lng=' . $cityLng . '&country='. $countryCodeA2 .'&maxRows=20&username=ernie1107&style=full';
+            $url='http://api.geonames.org/findNearbyWikipediaJSON?formatted=true&lat=' . $cityLat . '&lng=' . $cityLng . '&country='. $countryCodeA2 .'&maxRows=5&username=ernie1107&style=full';
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -317,7 +294,7 @@ $wikiCitiesTextData = array();
 foreach ($largeCities['records'] as $key => $value) {
     $cityName = preg_replace('/\s+/', '%20', $value['fields']['name']);
         //wiki city wiki text info
-        $url='http://api.geonames.org/wikipediaSearchJSON?formatted=true&q=' . $cityName .'&maxRows=10&username=estrada1107&style=full';
+        $url='http://api.geonames.org/wikipediaSearchJSON?formatted=true&q=' . $cityName .'&maxRows=5&username=estrada1107&style=full';
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
